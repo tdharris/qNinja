@@ -13,5 +13,6 @@
   "author": "Tyler Harris",
   "license": "BSD",
   "readmeFilename": "README.md",
-  "gitHead": "67a42e88d3b54aa92faa7409f7fe4b4be9aa57a9"
+  "gitHead": "67a42e88d3b54aa92faa7409f7fe4b4be9aa57a9",
+  "dependencies": {}
 }
