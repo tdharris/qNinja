@@ -1,0 +1,17 @@
+{
+  "name": "qNinja",
+  "version": "0.0.1",
+  "description": "Designed to help Novell Technical Support Engineers with queue management.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tdharris/qNinja.git"
+  },
+  "author": "Tyler Harris",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "67a42e88d3b54aa92faa7409f7fe4b4be9aa57a9"
+}
