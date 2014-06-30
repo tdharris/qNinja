@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html ng-app="myApp">
+  <head lang="en">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>qNinja</title>
 
     <!-- Bootstrap -->
-    <link href="dist/bootstrap-3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/bootstrap-3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/ng-grid/ng-grid.min.css" rel="stylesheet">
+    <!-- <link href="lib/bootstrap.min.css" rel="stylesheet"> -->
     <link href="css/home.css" rel="stylesheet">
-
-    <!-- Google Font for Header -->
-    <link href="http://fonts.googleapis.com/css?family=Allan:bold" rel="stylesheet" type="text/css">
-    <link href="http://fonts.googleapis.com/css?family=Cardo" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -20,16 +18,33 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <!-- <link href="lib/silviomoreto-bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- <link href="lib/wysihtml5/bootstrap-wysihtml5.css" rel="stylesheet" type="text/css"> -->
+
+    <!-- SCRIPTS -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="lib/angular.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/ng-grid.js"></script>
+    <script type="text/javascript" src="js/proetus.js"></script>
+    <script type="text/javascript" src="lib/notify-combined.min.js"></script>
+    <script type="text/javascript" src="lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="lib/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript" src="js/home.js"></script>
+    <script type="text/javascript" src="js/serviceRequests.js"></script>
+
   </head>
-  <body>
+  <body ng-controller="MyCtrl">
+   <div class="gridStyle" ng-grid="gridOptions"></div>
     <div class="container-fluid main">
       <div class="page-header">
-        <img class="pull-left" style="max-width:100px; margin-top: -18px;" src="img/ninja.png">
-        <h1 style="margin-left: 5px;">qNinja</h1>
+        <img class="pull-left logo" src="img/ninja.png">
+        <h1>qNinja</h1>
       </div>
       <div class="row clearfix">
         <div class="col-md-4 column">
-          <div class="panel panel-alizarin">
+          <div id="credentials" class="panel panel-alizarin">
             <div class="panel-heading">
               <h3 class="panel-title">
                 Novell Login
@@ -38,10 +53,21 @@
             <div class="panel-body">
               <form role="form">
                 <div class="form-group">
-                   <label for="exampleInputEmail1">User ID</label><input type="email" class="form-control" id="exampleInputEmail1" />
+                   <label for="userid">User ID</label><input type="email" class="form-control" id="userid" />
                 </div>
                 <div class="form-group">
-                   <label for="exampleInputPassword1">Password</label><input type="password" class="form-control" id="exampleInputPassword1" />
+                   <label for="password">Password</label><input type="password" class="form-control" id="password" />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Send From</label><br>
+                  <div class="btn-group btn-toggle" data-toggle="buttons">
+                    <label class="btn btn-primary active">
+                      <input type="radio" name="options" value="option1"> userid@novell.com
+                    </label>
+                    <label class="btn btn-default">
+                      <input type="radio" name="options" value="option2" checked=""> support@novell.com
+                    </label>
+                  </div>
                 </div>
                 <div class="checkbox">
                    <label><input type="checkbox" /> Remember Me</label>
@@ -49,7 +75,6 @@
               </form>
             </div>
           </div>
-          
         </div>
         <div class="col-md-8 column">
           <div class="panel panel-asbestos">
@@ -59,24 +84,15 @@
               </h3>
             </div>
             <div class="panel-body">
-              <div class="btn-group">
-                 <button class="btn btn-default">Action</button> <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a href="#">Action</a>
-                  </li>
-                  <li class="disabled">
-                    <a href="#">Another action</a>
-                  </li>
-                  <li class="divider">
-                  </li>
-                  <li>
-                    <a href="#">Something else here</a>
-                  </li>
-                </ul>
-              </div>
+              <!-- <select class="selectpicker">
+                <option>Mustard</option>
+                <option>Ketchup</option>
+                <option>Relish</option>
+              </select> -->
+              
               <div class="tabbable" id="tabs-187873">
                 <ul class="nav nav-tabs">
+                <input type="file" id="selectImg" style="visibility: hidden;"> 
                   <li class="active">
                     <a href="#panel-25518" data-toggle="tab">Content</a>
                   </li>
@@ -84,23 +100,33 @@
                     <a href="#panel-245867" data-toggle="tab">Signature</a>
                   </li>
                 </ul>
-                <div class="tab-content">
+                <div class="tab-content">                 
                   <div class="tab-pane active" id="panel-25518">
                     <p>
-                      <textarea class="form-control" rows="4"></textarea>
+                      <textarea class="textarea message" placeholder="Enter text ..."></textarea>
                     </p>
                   </div>
                   <div class="tab-pane" id="panel-245867">
                     <p>
-                      <textarea class="form-control" rows="4"></textarea>
+                      <textarea id="signature" class="message" placeholder="Enter text ..."></textarea>
                     </p>
                   </div>
                 </div>
-              </div>            
+              </div> 
+
             </div>
           </div>
         </div>
       </div>
+
+      <!-- <section ng-app="myApp" ng-controller="MyCtrl">
+        <div class="gridStyle" ng-grid="gridOptions"></div>
+      </section> -->
+
+      <!-- <section ng-app="scotchApp" ng-controller="MyCtrl">
+        <div class="gridStyle">{{ message }}</div>
+      </section> -->
+
       <div class="row clearfix">
         <div class="col-md-12 column">
           <div class="panel panel-midnightblue">
@@ -110,94 +136,63 @@
               </h3>
             </div>
             <div class="panel-body">
-              <table class="table table-hover table-striped">
+              <table id="serviceRequests" class="table table-hover table-condensed">
                 <thead>
                   <tr>
                     <th>
-                      #
+                      SR
                     </th>
                     <th>
-                      Product
-                    </th>
-                    <th>
-                      Payment Taken
+                      Description
                     </th>
                     <th>
                       Status
+                    </th>
+                    <th>
+                      Contact
+                    </th>
+                    <th>
+                      Alternate Contact
+                    </th>
+                    <th>
+                      Last Activity Date
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>
-                      1
-                    </td>
-                    <td>
-                      TB - Monthly
-                    </td>
-                    <td>
-                      01/04/2012
-                    </td>
-                    <td>
-                      Default
-                    </td>
+                    <td>10897317841</td>
+                    <td>Mobility reports connection to POA is down</td>
+                    <td>Monitor Solution</td>
+                    <td>mahoney@scsc.k12.in.us</td>
+                    <td></td>
+                    <td>6/16/2014 9:18:17 PM</td>
                   </tr>
                   <tr>
-                    <td>
-                      1
-                    </td>
-                    <td>
-                      TB - Monthly
-                    </td>
-                    <td>
-                      01/04/2012
-                    </td>
-                    <td>
-                      Approved
-                    </td>
-                  </tr>
-                  <tr class="success">
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      TB - Monthly
-                    </td>
-                    <td>
-                      02/04/2012
-                    </td>
-                    <td>
-                      Declined
-                    </td>
+                    <td>10896221741</td>
+                    <td>Slow email between remote post offices and GMS</td>
+                    <td>Monitor Solution</td>
+                    <td>chad.meltzer@hunterdouglas.com.au</td>
+                    <td></td>
+                    <td>6/19/2014 11:38:54 PM</td>
                   </tr>
                   <tr>
-                    <td>
-                      3
-                    </td>
-                    <td>
-                      TB - Monthly
-                    </td>
-                    <td>
-                      03/04/2012
-                    </td>
-                    <td>
-                      Pending
-                    </td>
+                    <td>10893780721</td>
+                    <td>Filr large deployment crashing</td>
+                    <td>Awaiting Engineering</td>
+                    <td>joe.comeau@hli.ubc.ca</td>
+                    <td></td>
+                    <td>6/19/2014 7:14:42 AM</td>
                   </tr>
                   <tr>
-                    <td>
-                      4
-                    </td>
-                    <td>
-                      TB - Monthly
-                    </td>
-                    <td>
-                      04/04/2012
-                    </td>
-                    <td>
-                      Call in to confirm
-                    </td>
+                    <td>10894110211</td>
+                    <td>Problem opening folder with added "shared folders"</td>
+                    <td>Awaiting Customer</td>
+                    <td>llauryn@datron.cz</td>
+                    <td></td>
+                    <td>5/25/2014 10:07:27 PM</td>
                   </tr>
+                  <!-- Data pulled from http://proetus.provo.novell.com/ -->
                 </tbody>
               </table>
             </div>
@@ -206,14 +201,9 @@
       </div>
       <div class="row clearfix">
         <div class="col-md-12 column">
-          <button type="button" class="btn btn-success btn-default pull-right">Send</button>
+          <button id="sendMail" type="button" class="btn btn-success btn-default pull-right">Send</button>
         </div>
       </div>
     </div>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="dist/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="dist/bootstrap-3.1.1/js/bootstrap.min.js"></script>
   </body>
 </html>
