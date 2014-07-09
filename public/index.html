@@ -18,7 +18,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
+
     <!-- <link href="lib/silviomoreto-bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css"> -->
     <!-- <link href="lib/wysihtml5/bootstrap-wysihtml5.css" rel="stylesheet" type="text/css"> -->
 
@@ -36,7 +36,6 @@
 
   </head>
   <body ng-controller="SRCtrl">
-   <div class="gridStyle" ng-grid="gridOptions"></div>
     <div class="container-fluid main">
       <div class="page-header">
         <img class="pull-left logo" src="img/ninja.png">
@@ -55,7 +54,6 @@
                 <div class="form-group">
                    <label for="userid">User ID</label><input ng-model="engineer" class="form-control" id="userid" />
                 </div>
-                {{ engineer }}
                 <div class="form-group">
                    <label for="password">Password</label><input type="password" class="form-control" id="password" />
                 </div>
@@ -93,10 +91,10 @@
                 <option>Ketchup</option>
                 <option>Relish</option>
               </select> -->
-              
+
               <div class="tabbable" id="tabs-187873">
                 <ul class="nav nav-tabs">
-                <input type="file" id="selectImg" style="visibility: hidden;"> 
+                <input type="file" id="selectImg" style="visibility: hidden;">
                   <li class="active">
                     <a href="#panel-25518" data-toggle="tab">Content</a>
                   </li>
@@ -104,7 +102,7 @@
                     <a href="#panel-245867" data-toggle="tab">Signature</a>
                   </li>
                 </ul>
-                <div class="tab-content">                 
+                <div class="tab-content">
                   <div class="tab-pane active" id="panel-25518">
                     <p>
                       <textarea class="textarea message" placeholder="Enter text ..."></textarea>
@@ -116,13 +114,14 @@
                     </p>
                   </div>
                 </div>
-              </div> 
+              </div>
 
             </div>
           </div>
         </div>
       </div>
 
+<!--       <div class="gridStyle" ng-grid="gridOptions"></div> -->
       <!-- <section ng-app="myApp" ng-controller="MyCtrl">
         <div class="gridStyle" ng-grid="gridOptions"></div>
       </section> -->
@@ -140,65 +139,9 @@
               </h3>
             </div>
             <div class="panel-body">
-              <table id="serviceRequests" class="table table-hover table-condensed">
-                <thead>
-                  <tr>
-                    <th>
-                      SR
-                    </th>
-                    <th>
-                      Description
-                    </th>
-                    <th>
-                      Status
-                    </th>
-                    <th>
-                      Contact
-                    </th>
-                    <th>
-                      Alternate Contact
-                    </th>
-                    <th>
-                      Last Activity Date
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>10897317841</td>
-                    <td>Mobility reports connection to POA is down</td>
-                    <td>Monitor Solution</td>
-                    <td>mahoney@scsc.k12.in.us</td>
-                    <td></td>
-                    <td>6/16/2014 9:18:17 PM</td>
-                  </tr>
-                  <tr>
-                    <td>10896221741</td>
-                    <td>Slow email between remote post offices and GMS</td>
-                    <td>Monitor Solution</td>
-                    <td>chad.meltzer@hunterdouglas.com.au</td>
-                    <td></td>
-                    <td>6/19/2014 11:38:54 PM</td>
-                  </tr>
-                  <tr>
-                    <td>10893780721</td>
-                    <td>Filr large deployment crashing</td>
-                    <td>Awaiting Engineering</td>
-                    <td>joe.comeau@hli.ubc.ca</td>
-                    <td></td>
-                    <td>6/19/2014 7:14:42 AM</td>
-                  </tr>
-                  <tr>
-                    <td>10894110211</td>
-                    <td>Problem opening folder with added "shared folders"</td>
-                    <td>Awaiting Customer</td>
-                    <td>llauryn@datron.cz</td>
-                    <td></td>
-                    <td>5/25/2014 10:07:27 PM</td>
-                  </tr>
-                  <!-- Data pulled from http://proetus.provo.novell.com/ -->
-                </tbody>
-              </table>
+        
+            <div class="gridStyle" ng-grid="gridOptions" class="table table-hover table-condensed"></div>
+
             </div>
           </div>
         </div>

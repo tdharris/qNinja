@@ -1,21 +1,40 @@
 var request = require('request'),
-	logme = require('logme');
+		logme = require('logme'),
+		api = require('express-api-helper');
 
-module.exports=function(engineer, callback) {
-	request('http://proetus.provo.novell.com/qmon/brief-tse.asp?tse='+ engineer, function (error, response, body) {
-		if (error && response.statusCode !== 200) {
-			logme.error('Failed response from Proetus for engineer: ' + engineer + ' - ', response, error);
-			callback(error); 
-		}
-		else if (response.body.length <= 11) {
-			logme.warning('Failed response from Proetus for engineer: ' + engineer + ' - no such engineer!');
-			callback(true);
+module.exports=function(req, res) {
+	var engineer = req.body.engineer;
+	request('http://proetus.provo.novell.com/qmon/brief-tse-json.asp?tse='+ engineer, function (error, response, body) {
+
+		try {
+
+			var data = JSON.parse(response.body);
+
 		}
 
-		else {
-			logme.info('Successful response from Proetus for engineer: ' + engineer);
-	  		callback(false, response.body);
+		catch(err) {
+
+			logme.error('Failed to parse response from Proetus for engineer: ' + engineer + ' - ', err, "\n" + response.body);
+			error=true;
+
 		}
-	  	
+
+		finally {
+
+			if (error && response.statusCode !== 200) {
+				logme.error('Failed response from Proetus for engineer: ' + engineer + ' - ', error);
+				api.invalid(req, res, errors)
+			} else if (response.body.length <= 11) {
+				logme.warning('Failed response from Proetus for engineer: ' + engineer + ' - no such engineer!');
+				api.notFound(req, res);
+			} else if (error){
+				api.serverError(req, res, error);
+			} else {
+				logme.info('Successful response from Proetus for engineer: ' + engineer);
+				api.ok(req, res, JSON.stringify(data));
+			}
+
+		}
+
 	});
 };

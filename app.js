@@ -8,10 +8,7 @@ app.use(express.static(__dirname+'/public'))
    .use(bodyParser.json());
 
 app.post('/getServiceRequests', function(req, res){
-	getServiceRequests(req.body.engineer, function(err, data) {
-		if(err) return api.notFound(req, res);
-		api.ok(req, res, data);
-	});	
+	getServiceRequests(req, res);
 });
 
 console.log('qNinja service is up.');

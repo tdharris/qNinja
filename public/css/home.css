@@ -8,7 +8,6 @@
   font-weight: 700;
   src: local('Allan Bold'), local('Allan-Bold'), url('fonts/Allan.ttf') format('truetype');
 }
-
 .page-header h1 {
     font-family: 'Allan', Helvetica, Arial, sans-serif;
     font-size: 4em;
@@ -17,9 +16,9 @@
 }
 
 .gridStyle {
-    border: 1px solid rgb(212,212,212);
-    width: 400px; 
-    height: 300px;
+    border: 0px solid rgb(212,212,212);
+    width: auto;
+    min-height: 300px;
 }
 
 p {
@@ -28,7 +27,7 @@ p {
     line-height: 25px;
 }
 .logo {
-    max-width:60px; 
+    max-width:60px;
     margin-top: -18px;
 }
 
@@ -36,9 +35,6 @@ p {
     margin: 20px 0 !important;
     height: 27px !important;
     line-height: 37px !important;
-}
-.selected {
-    background-color: green !important;
 }
 .message {
     resize: none;
@@ -80,7 +76,7 @@ tbody tr {
 .wet-asphalt>.panel-heading {
     background-color: #34495e;
     color: white;
-    
+
 } .wet-asphalt { border-color: #34495e; }
 
 .panel-alizarin>.panel-heading {

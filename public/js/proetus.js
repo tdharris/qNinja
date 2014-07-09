@@ -6,7 +6,7 @@ function Proetus(table) {
 Proetus.prototype = {
 	load: function(list) {
 		console.log('loading list...');
-		
+
 	},
 
 	setEngineer: function(engineer) {
@@ -25,28 +25,27 @@ Proetus.prototype = {
 		var that = this;
 		if (!jQuery.isEmptyObject(this.engineer)) {
 			request = $.ajax({
-		        url: "getServiceRequests",
-		        type: "post",
-		        timeout:5000,
-		        data: JSON.stringify({ 'engineer': this.engineer }),
-		        contentType: "application/json",
-		        success: function(res){ 
-					// console.log(res);
-					// that.viewList(res);
-					list = [{'engineer': 'engineer>','sr': 'sr#','status': 'status','brief': 'briefDescription','lastActivity': 'lastActivity', 'lastActivityDate': 'lastActivityDate','primaryContact': 'primaryContact','alternateContact': 'alternateContact'},{'engineer': 'engineer','sr': 'sr#','status': 'status','brief': 'briefDescription','lastActivity': 'lastActivity', 'lastActivityDate': 'lastActivityDate','primaryContact': 'primaryContact','alternateContact': 'alternateContact'},{'engineer': 'engineer','sr': 'sr#','status': 'status','brief': 'briefDescription','lastActivity': 'lastActivity', 'lastActivityDate': 'lastActivityDate','primaryContact': 'primaryContact','alternateContact': 'alternateContact'}];
-				},
-				error: function(res){
-					console.log(res);
-					$("#userid").notify("User not found!", { className: 'error', elementPosition:"botom left" });
-				}
+	        url: "getServiceRequests",
+	        type: "post",
+	        timeout:5000,
+	        data: JSON.stringify({ 'engineer': this.engineer }),
+	        contentType: "application/json",
+	        success: function(res){
+						// Server returns some funnies:
+						res = res.replace(/\r?\n/g, "");
+						
+						that.viewList(JSON.parse(res));
+					},
+					error: function(res){
+						console.log(res);
+						$("#userid").notify("User not found!", { className: 'error', elementPosition:"botom left" });
+					}
 		    });
 		}
 	},
 
 	viewList: function(list) {
 		// console.log(list);
-		list = [{'engineer': 'engineer>','sr': 'sr#','status': 'status','brief': 'briefDescription','lastActivity': 'lastActivity', 'lastActivityDate': 'lastActivityDate','primaryContact': 'primaryContact','alternateContact': 'alternateContact'},{'engineer': 'engineer','sr': 'sr#','status': 'status','brief': 'briefDescription','lastActivity': 'lastActivity', 'lastActivityDate': 'lastActivityDate','primaryContact': 'primaryContact','alternateContact': 'alternateContact'},{'engineer': 'engineer','sr': 'sr#','status': 'status','brief': 'briefDescription','lastActivity': 'lastActivity', 'lastActivityDate': 'lastActivityDate','primaryContact': 'primaryContact','alternateContact': 'alternateContact'}];
-
 		list.forEach(this.addRow(this, list));
 	},
 
