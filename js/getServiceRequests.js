@@ -8,7 +8,8 @@ module.exports=function(req, res) {
 
 		try {
 
-			var data = JSON.parse(response.body);
+			// Novell Proetus server sometimes has newline characters
+			var data = JSON.parse(response.body.replace(/\n|\r/g, ""));
 
 		}
 
