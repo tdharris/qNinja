@@ -1,6 +1,6 @@
 $( document ).ready(function() {
 
-	var proetus = new Proetus(document.getElementById('serviceRequests'));
+	// var proetus = new Proetus(document.getElementById('serviceRequests'));
 
 	tinymce.init({
 	    selector: "textarea",
@@ -21,9 +21,9 @@ $( document ).ready(function() {
 	   toolbar: "template | insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | preview fullpage | forecolor backcolor"
 	 }); 
 
-	$('#userid').focusout(function () {
-		proetus.setEngineer($('#userid').val());
-	});
+	// $('#userid').focusout(function () {
+	// 	proetus.setEngineer($('#userid').val());
+	// });
 	
     // Switch - Mail From: userid@novell.com or support@novell.com
     $('.btn-toggle').click(function() {

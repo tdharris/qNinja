@@ -27,7 +27,7 @@
     <script type="text/javascript" src="lib/angular.min.js"></script>
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/ng-grid.js"></script>
-    <script type="text/javascript" src="js/proetus.js"></script>
+    <!-- // <script type="text/javascript" src="js/proetus.js"></script> -->
     <script type="text/javascript" src="lib/notify-combined.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="lib/tinymce/tinymce.min.js"></script>
@@ -35,7 +35,7 @@
     <script type="text/javascript" src="js/serviceRequests.js"></script>
 
   </head>
-  <body ng-controller="MyCtrl">
+  <body ng-controller="SRCtrl">
    <div class="gridStyle" ng-grid="gridOptions"></div>
     <div class="container-fluid main">
       <div class="page-header">
@@ -53,8 +53,9 @@
             <div class="panel-body">
               <form role="form">
                 <div class="form-group">
-                   <label for="userid">User ID</label><input type="email" class="form-control" id="userid" />
+                   <label for="userid">User ID</label><input ng-model="engineer" class="form-control" id="userid" />
                 </div>
+                {{ engineer }}
                 <div class="form-group">
                    <label for="password">Password</label><input type="password" class="form-control" id="password" />
                 </div>
@@ -67,6 +68,9 @@
                     <label class="btn btn-default">
                       <input type="radio" name="options" value="option2" checked=""> support@novell.com
                     </label>
+                  </div>
+                  <div>
+                    <button ng-click="getServiceRequests()" type="button" class="btn btn-success btn-default pull-right">Refresh List</button>
                   </div>
                 </div>
                 <div class="checkbox">
