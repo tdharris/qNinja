@@ -21,6 +21,10 @@
     min-height: 300px;
 }
 
+.ngViewport { max-height: 600px; height: auto !important; min-height: 200px !important; }
+.ngCanvas, .ngViewport, .ngRow, .ngFooterPanel, .ngTopPanel { width: 100% !important; }
+.ngRow { width: 100% !important; }
+
 p {
     font-family: 'Cardo', Georgia, Times, serif;
     font-size: 18px;
