@@ -60,8 +60,8 @@ module.exports = function(req, res) {
                         var mailOptions = {
                             from: formData.engineer + "@novell.com",
                             to: recipients,
-                            cc: "support@novell.com",
-                            subject: "SR " + mail.sr + " - " + mail.brief + " +",
+                            // cc: "support@novell.com",
+                            subject: "SR " + mail.sr + " - " + mail.brief + " +EO",
                             html: formData.content + formData.signature
                         };
 
