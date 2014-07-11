@@ -17,6 +17,7 @@
   "dependencies": {
     "express-api-helper": "0.0.3",
     "nodemailer": "~0.7.1",
-    "setops": "~0.1.7"
+    "setops": "~0.1.7",
+    "node-async": "0.0.1"
   }
 }

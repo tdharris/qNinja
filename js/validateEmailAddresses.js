@@ -1,15 +1,15 @@
 module.exports=function(emailAddresses, callback){
 
-  // Deal with emailAddresses
-  function validateEmail(email){
-    var re = /\S+@\S+\.\S+/;
-    return re.test(email);
+  function looksLegit(str) {
+    var lastAtPos = str.lastIndexOf('@');
+    var lastDotPos = str.lastIndexOf('.');
+    return (lastAtPos < lastDotPos && lastAtPos > 0 && str.indexOf('@@') == -1 && lastDotPos > 2 && (str.length - lastDotPos) > 2);
   }
 
-  emailAddresses.forEach(function(emailAddress){
-      if(!validateEmail(emailAddress)){
-        emailAddresses.pop(emailAddress);
-      }
+  emailAddresses.forEach(function(email, index){
+    if(!looksLegit(email)){
+      emailAddresses.splice(index);
+    }
   });
 
   callback(emailAddresses);

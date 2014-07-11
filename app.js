@@ -20,5 +20,10 @@ console.log('qNinja service is up.');
 
 // Where to put utility?
 String.prototype.isEmpty = function() {
-   return (this.legnth === 0 || !this.trim());
+   return (this.length === 0 || !this.trim());
 }
+
+Array.prototype.appendStringToElementAtIndex = function(index, str) {
+    if(typeof this[index] === 'undefined' || typeof this[index] !== 'string') return false;
+    this[index] += ' ' + str;
+};
