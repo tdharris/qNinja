@@ -68,11 +68,11 @@ module.exports = function(req, res) {
                         transport.sendMail(mailOptions, function(error, response){
                             var message = eventHeader + ' [mail ' + index + '] ' + mail.subject + ' to ' + recipients;
                             if(error){
-                                api.badRequest(req, res, message)
+                                // api.badRequest(req, res, message)
                                 logme.error(message + ' | Failed to send: ' + response.message);
                                 report.push(message + ' | Failed to send: ' + response.message);
                             }else{
-                                api.ok(req, res, message);
+                                // api.ok(req, res, message);
                                 logme.info(message + ' | Sent: ' + response.message);
                                 report.push(message + ' | Sent: ' + response.message);
                             }
