@@ -3,9 +3,33 @@ var myApp = angular.module('myApp', ['ngGrid']);
 
   myApp.controller('SRCtrl', ['$scope', '$http', function($scope,$http) {
 
+    // Initialize editor with custom theme and modules
+    $scope.editorContent = new Quill('#content', {
+      modules: {
+        'toolbar': { container: '#toolbar-content' }
+      },
+      theme: 'snow'
+    });
+    $scope.editorSignature = new Quill('#signature', {
+      modules: {
+        'toolbar': { container: '#toolbar-signature' }
+      },
+      theme: 'snow'
+    });
+
+    $scope.selectedRows=[];
+    $scope.formData = {
+      "engineer": undefined,
+      "password": undefined,
+      "fromUser": true,
+      "emails": $scope.selectedRows,
+      "content": undefined,
+      "signature": undefined
+    };
+
     $scope.gridOptions = {
       data: 'myData',
-      selectedItems: $scope.selectedEntries,
+      selectedItems: $scope.selectedRows,
       enableRowSelection: true,
       enableCellEditOnFocus: true,
       enableColumnResize: true,
@@ -27,10 +51,9 @@ var myApp = angular.module('myApp', ['ngGrid']);
       $http({
         url: 'getServiceRequests',
         method: "POST",
-        data: JSON.stringify({ 'engineer': $scope.engineer }),
+        data: JSON.stringify({ 'engineer': $scope.formData.engineer }),
         headers: {'Content-Type': 'application/json'}
       }).success(function (data, status, headers, config) {
-          $scope.persons = data; // assign  $scope.persons here as promise is resolved here
           var res = JSON.parse(JSON.parse(data));
           console.log(res);
 
@@ -38,6 +61,24 @@ var myApp = angular.module('myApp', ['ngGrid']);
 
         }).error(function (data, status, headers, config) {
             $("#userid").notify(data.message, { className: 'error', elementPosition:"botom left" });
+            console.error(data);
+        });
+    };
+
+    $scope.sendMail = function(){
+      $scope.formData.content = $scope.editorContent.getHTML();
+      $scope.formData.signature = $scope.editorSignature.getHTML();
+      
+      $http({
+        url: 'sendMail',
+        method: "POST",
+        data: JSON.stringify($scope.formData),
+        headers: {'Content-Type': 'application/json'}
+      }).success(function (data, status, headers, config) {
+          var res = JSON.parse(JSON.parse(data));
+          console.log(res);
+        }).error(function (data, status, headers, config) {
+            // $("#userid").notify(data.message, { className: 'error', elementPosition:"botom left" });
             console.error(data);
         });
     };

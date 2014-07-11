@@ -22,7 +22,7 @@ module.exports=function(req, res) {
 
 		finally {
 
-			if (error && response.statusCode !== 200) {
+			if (error && response.statusCode !== 200 || response.statusCode === undefined) {
 				logme.error('Failed response from Proetus for engineer: ' + engineer + ' - ', error);
 				api.invalid(req, res, errors)
 			} else if (response.body.length <= 11) {

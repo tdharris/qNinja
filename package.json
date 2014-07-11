@@ -15,6 +15,8 @@
   "readmeFilename": "README.md",
   "gitHead": "67a42e88d3b54aa92faa7409f7fe4b4be9aa57a9",
   "dependencies": {
-    "express-api-helper": "0.0.3"
+    "express-api-helper": "0.0.3",
+    "nodemailer": "~0.7.1",
+    "setops": "~0.1.7"
   }
 }
