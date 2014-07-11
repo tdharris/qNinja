@@ -14,6 +14,7 @@ app.post('/getServiceRequests', function(req, res){
 
 app.post('/sendMail', function(req, res){
    sendMail(req, res);
+   api.ok(req, res, 'Request received by server!');
 });
 
 console.log('qNinja service is up.');

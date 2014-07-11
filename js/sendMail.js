@@ -29,54 +29,59 @@ module.exports = function(req, res) {
 
     logme.info(eventHeader + ' Validating', formData.emails.length + ' email(s)');
 
-    formData.emails.forEach(function(mail, index){
+    formData.emails.forEach(function(mail, index) {
+            // Create an array of emailAddresses from user input (comma dileneated list)
+            var checkEmailAddresses = [];
 
-        // Create an array of emailAddresses from user input (comma dileneated list)
-        var checkEmailAddresses = [];
+            var pce = myUtil.isEmpty(mail.primaryContact),
+                ace = myUtil.isEmpty(mail.alternateContact),
+                skipValidate = false;
 
-        var pce = myUtil.isEmpty(mail.primaryContact),
-            ace = myUtil.isEmpty(mail.alternateContact),
-            skipValidate = false;
+            if(pce && ace) {
+                skipValidate = true;
+                console.log(req);
+                var error = 'No email addresses! ' + mail.sr + ' - ' + mail.brief;
+                // api.invalid(req, res, [error]);
+                logme.warning(eventHeader + ' No email addresses for SR ' + mail.sr);
+            }
+            if(!pce && !ace) checkEmailAddresses = setops(mail.primaryContact.split(',')).union(mail.alternateContact.split(','));
+            if(!pce && ace) checkEmailAddresses = mail.primaryContact.split(',');
+            if(pce && !ace) checkEmailAddresses = mail.alternateContact.split(',');
 
-        if(pce && ace) {
-            skipValidate = true;
-            logme.warning(eventHeader + ' No email addresses for SR ' + mail.sr);
-        }
-        if(!pce && !ace) checkEmailAddresses = setops(mail.primaryContact.split(',')).union(mail.alternateContact.split(','));
-        if(!pce && ace) checkEmailAddresses = mail.primaryContact.split(',');
-        if(pce && !ace) checkEmailAddresses = mail.alternateContact.split(',');
+            // Validate emailAddresses
+            if (!skipValidate) {
+                validateEmailAddresses(checkEmailAddresses, function(recipients) {
+                    if (myUtil.isEmpty(recipients)) {
+                        var error = 'No email addresses! ' + mail.sr + ' ' + mail.brief;
+                        // api.invalid(req, res, [error]);
+                        logme.warning(eventHeader + ' No valid email addresses for SR ' + mail.sr);
+                    } else {
+                        mail.subject = "SR " + mail.sr + " - " + mail.brief + " +";
+                        var mailOptions = {
+                            from: formData.engineer + "@novell.com",
+                            to: recipients,
+                            cc: "support@novell.com",
+                            subject: "SR " + mail.sr + " - " + mail.brief + " +",
+                            html: formData.content + formData.signature
+                        };
 
-        // Validate emailAddresses
-        if (!skipValidate) {
-            validateEmailAddresses(checkEmailAddresses, function(recipients) {
-                if (myUtil.isEmpty(recipients)) {
-                    logme.warning(eventHeader + ' No valid email addresses for SR ' + mail.sr);
-                } else {
-                    mail.subject = "SR " + mail.sr + " - " + mail.brief + " +";
-                    var mailOptions = {
-                        from: formData.engineer + "@novell.com",
-                        to: recipients,
-                        cc: "support@novell.com",
-                        subject: "SR " + mail.sr + " - " + mail.brief + " +",
-                        html: formData.content + formData.signature
-                    };
+                        transport.sendMail(mailOptions, function(error, response){
+                            var message = eventHeader + ' [mail ' + index + '] ' + mail.subject + ' to ' + recipients;
+                            if(error){
+                                api.badRequest(req, res, message)
+                                logme.error(message + ' | Failed to send: ' + response.message);
+                                report.push(message + ' | Failed to send: ' + response.message);
+                            }else{
+                                api.ok(req, res, message);
+                                logme.info(message + ' | Sent: ' + response.message);
+                                report.push(message + ' | Sent: ' + response.message);
+                            }
 
-                    transport.sendMail(mailOptions, function(error, response){
-                        var message = eventHeader + ' [mail ' + index + '] ' + mail.subject + ' to ' + recipients;
-                        if(error){
-                            logme.error(message + ' | Failed to send: ' + response.message);
-                            report.push(message + ' | Failed to send: ' + response.message);
-                        }else{
-                            logme.info(message + ' | Sent: ' + response.message);
-                            report.push(message + ' | Sent: ' + response.message);
-                        }
-
-                    });
-                }    
-            });
-        }
-
-    }); 
+                        });
+                    }    
+                });
+            }
+        }); 
 };
 
 // function notifyEngineer(){

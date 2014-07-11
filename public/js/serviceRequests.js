@@ -52,15 +52,16 @@ var myApp = angular.module('myApp', ['ngGrid']);
         url: 'getServiceRequests',
         method: "POST",
         data: JSON.stringify({ 'engineer': $scope.formData.engineer }),
-        headers: {'Content-Type': 'application/json'}
+        headers: {'Content-Type': 'application/json'},
+        timeout: 2000
       }).success(function (data, status, headers, config) {
           var res = JSON.parse(JSON.parse(data));
-          console.log(res);
+          toastr.success('Successful Request.');
 
           $scope.myData = res;
 
         }).error(function (data, status, headers, config) {
-            $("#userid").notify(data.message, { className: 'error', elementPosition:"botom left" });
+            toastr.error('Failed Request!');
             console.error(data);
         });
     };
@@ -75,11 +76,12 @@ var myApp = angular.module('myApp', ['ngGrid']);
         data: JSON.stringify($scope.formData),
         headers: {'Content-Type': 'application/json'}
       }).success(function (data, status, headers, config) {
-          var res = JSON.parse(JSON.parse(data));
-          console.log(res);
+          var res = JSON.parse(data);
+          toastr.success(res);
         }).error(function (data, status, headers, config) {
             // $("#userid").notify(data.message, { className: 'error', elementPosition:"botom left" });
-            console.error(data);
+            toastr.error(headers);
+            console.error(data);   
         });
     };
 
