@@ -3,154 +3,132 @@ var logme = require('logme'),
     nodemailer = require("nodemailer"),
     setops = require('setops'),
     validateEmailAddresses = require('./validateEmailAddresses'),
-    myUtil = require('./myUtil');
-    // async_block = require('node-async');
+    myUtil = require('./myUtil'),
+    validate = require('./validateEmailAddresses'),
+    async = require('async');
 
 module.exports = function(req, res) {
-    var report = [],
-        formData = req.body,
-        eventHeader = '[' + formData.engineer + ']',
-        hasPassword="",
-        transport = nodemailer.createTransport("SMTP", {
-            host: "xgate.provo.novell.com",
-            secureConnection: false,
-            tls: {
-                ciphers:'SSLv3'
+ 
+    var task = req.body;
+    task.report = [];
+    // task.emails = ['email1.com', 'email@domain', 'email@domain.com'];
+            // .engineer, .password, .content, .signature, .emails[array], .fromUser[boolean]
+    async.each(
+        task.emails,
+        function(item, callback) {
+            async.waterfall([
+                function(callback) {
+                    var recipients = [];
+                    console.log('parsing addresses...');
+
+                    [item.primaryContact, item.alternateContact].forEach(function(item, index, array) {
+
+                        var empty = myUtil.isEmpty(item);
+                        if(!empty) {
+                            recipients = setops(recipients).union(item.split(','));
+                        }
+
+                        if (index === array.length - 1) {
+                             callback(null, recipients);
+                         }
+                        
+                    });
+                },
+                function(recipients, callback) { 
+                    console.log('validating email...');
+                    validate(recipients, callback);
+                },
+                function(recipients, callback) {
+
+                    // Prep mailOptions
+                    task.subject = "SR " + item.sr + " - " + item.brief + " +EO";
+                    task.from = "support@novell.com";
+                    if(task.fromUser) {
+                        task.from = task.engineer + "@novell.com";
+                    }
+
+                    var mailOptions = {
+                        from: task.from,
+                        to: recipients.join(','),
+                        // cc: "support@novell.com",
+                        subject: task.subject,
+                        html: task.content + task.signature
+                    };
+
+                    callback(null, mailOptions);
+
+                },
+                function(mailOptions, callback) {
+
+                    var eventHeader = '[' + task.engineer + '] [mail] ';
+
+                    // Debug
+                    // console.log(eventHeader + ' sending ' + mailOptions);
+
+                    // Create transport
+                    transport = nodemailer.createTransport("SMTP", {
+                        host: "xgate.provo.novell.com",
+                        secureConnection: false,
+                        tls: {
+                            ciphers:'SSLv3'
+                        },
+                        port: 25,
+                        auth: {
+                            user: task.engineer,
+                            pass: task.password
+                        }
+                    });
+
+                    // Send mail through transport
+                    transport.sendMail(mailOptions, function(error, response){
+                        
+                        if(error){
+                            var message = 'Failed to send: <b style="color: red">' + error + '</b> | ' + task;
+                            logme.error('Failed to send: ' + error + task);
+                        }
+
+                        else{
+                            var message = 'Sent: <b style="color: green">' + response.message + ' ✔</b> | ' + mailOptions.subject + ' to: ' + mailOptions.to + ' from: ' + mailOptions.from;
+                            logme.info('Sent: ' + response.message + ' | ' + mailOptions.subject + ' to: ' + mailOptions.to + ' from: ' + mailOptions.from);
+                        }
+
+                        transport.close();
+                        callback(null, message);
+
+                    });
+
+                }
+            ], function (err, result) {
+               // result now equals 'done' 
+               console.log('mail sent, appending to task report.');
+               task.report.push(result);
+               callback();
+            });
+        },
+        function(err, results) {
+            // Prettify report email content
+            var pReport = '',
+            notifyTransport = nodemailer.createTransport("Direct");
+
+            task.report.forEach(function(item, index, array){
+                pReport += item + "<br>";
+            });
+
+            // Send report to engineer
+            notifyTransport.sendMail({
+                from: "qNinja <qNinja@mymobile.lab.novell.com>",
+                to: "tylerdavidharris@gmail.com",
+                subject: "[qNinja] email report ✔",
+                html: pReport
             },
-            port: 25,
-            auth: {
-                user: formData.engineer,
-                pass: formData.password
-            }
-        });
+            function(error, response){
+                console.log('got to callback of report mail...');
+                if(error) logme.error(error);
+                else logme.info('Sent report to: ' + task.engineer + ' | ' + response.message);
+                notifyTransport.close();
+            });
 
-    if(typeof formData.password != "undefined") { hasPassword='with credentials' }
-    logme.info(eventHeader + ' Received new sendMail request ' + formData.emails.length + ' email(s): sendFromUser is', formData.fromUser, hasPassword);
+        }
+    );
 
-    logme.info(eventHeader + ' Validating', formData.emails.length + ' email(s)');
-
-    formData.emails.forEach(function(mail, index) {
-            // Create an array of emailAddresses from user input (comma dileneated list)
-            var checkEmailAddresses = [];
-
-            var pce = myUtil.isEmpty(mail.primaryContact),
-                ace = myUtil.isEmpty(mail.alternateContact),
-                skipValidate = false;
-
-            if(pce && ace) {
-                skipValidate = true;
-                console.log(req);
-                var error = 'No email addresses! ' + mail.sr + ' - ' + mail.brief;
-                // api.invalid(req, res, [error]);
-                logme.warning(eventHeader + ' No email addresses for SR ' + mail.sr);
-            }
-            if(!pce && !ace) checkEmailAddresses = setops(mail.primaryContact.split(',')).union(mail.alternateContact.split(','));
-            if(!pce && ace) checkEmailAddresses = mail.primaryContact.split(',');
-            if(pce && !ace) checkEmailAddresses = mail.alternateContact.split(',');
-
-            // Validate emailAddresses
-            if (!skipValidate) {
-                validateEmailAddresses(checkEmailAddresses, function(recipients) {
-                    if (myUtil.isEmpty(recipients)) {
-                        var error = 'No email addresses! ' + mail.sr + ' ' + mail.brief;
-                        // api.invalid(req, res, [error]);
-                        logme.warning(eventHeader + ' No valid email addresses for SR ' + mail.sr);
-                    } else {
-                        mail.subject = "SR " + mail.sr + " - " + mail.brief + " +";
-                        var mailOptions = {
-                            from: formData.engineer + "@novell.com",
-                            to: recipients,
-                            cc: "support@novell.com",
-                            subject: "SR " + mail.sr + " - " + mail.brief + " +EO",
-                            html: formData.content + formData.signature
-                        };
-
-                        transport.sendMail(mailOptions, function(error, response){
-                            var message = eventHeader + ' [mail ' + index + '] ' + mail.subject + ' to ' + recipients;
-                            if(error){
-                                // api.badRequest(req, res, message)
-                                logme.error(message + ' | Failed to send: ' + response.message);
-                                report.push(message + ' | Failed to send: ' + response.message);
-                            }else{
-                                // api.ok(req, res, message);
-                                logme.info(message + ' | Sent: ' + response.message);
-                                report.push(message + ' | Sent: ' + response.message);
-                            }
-
-                        });
-                    }    
-                });
-            }
-        }); 
-};
-
-// function notifyEngineer(){
-//     // Send report to user from notify@mymobile.lab.novell.com
-//     notifyTransport = nodemailer.createTransport("SMTP", {
-//         host: "mymobile.lab.novell.com",
-//         secureConnection: false,
-//         tls: {
-//             ciphers:'SSLv3'
-//         },
-//         port: 25,
-//         auth: {
-//             user: notify,
-//             pass: "novell"
-//         }
-//     });
-//     notifyTransport.sendMail({
-//         from: notify@mymobile.lab.novell.com,
-//         to: formData.engineer + "@novell.com",
-//         subject: "[qNinja] " + formData.engineer + " email report",
-//         html: report
-//     }, function(error, response){
-//         if(error) logme.error()
-//     };
-// });
-
-        // asyncTasker([
-        //     {
-        //         name: 'validateEmailAddresses',
-        //         task: validateEmailAddresses(checkEmailAddresses, callback)
-        //     },
-        //     {
-        //         name: 'prepMail',
-        //         task: function(recipients, callback){
-        //             mail.subject = "SR " + mail.sr + " - " + mail.brief + " +";
-        //
-        //             var mailOptions = {
-        //                 from: formData.engineer + "@novell.com",
-        //                 to: recipients,
-        //                 cc: "support@novell.com",
-        //                 subject: "SR " + mail.sr + " - " + mail.brief + " +",
-        //                 html: formData.content + formData.signature
-        //             };
-        //
-        //             callback(null, mailOptions);
-        //         }
-        //     },
-        //     {
-        //         name: 'sendMail',
-        //         task: function(mailOptions, callback) {
-        //             report = "yay";
-        //             transport.sendMail(mailOptions, function(error, response){
-        //                 logme.info('[' + formData.engineer + '] [mail ' + index + '] ' + mail.subject, ' to ' + recipients);
-        //                 if(error){
-        //                     var message = '[' + formData.engineer + '] [mail ' + index + '] Failed to send: ' + mail + response.message;
-        //                     logme.error(message);
-        //                     report.push(message);
-        //                 }else{
-        //                     var message = '[' + formData.engineer + '] [mail ' + index + '] Sent: ' + response.message;
-        //                     logme.info();
-        //                     report.push(message);
-        //                 }
-        //             callback(null, report);
-        //             });
-        //         }
-        //
-        //     }
-        // ], function(results){
-        //     console.log(results);
-        //     transport.close();
-        //     api.ok(req, res, JSON.stringify({"message": "Finished!"}));
-        // });
+}

@@ -1,9 +1,12 @@
 var request = require('request'),
 		logme = require('logme'),
 		api = require('express-api-helper'),
-		myUtil = require('./myUtil');
+		myUtil = require('./myUtil'),
+		async = require('async'),
+		mailFactory = require('./mailAppFactory');
 
 module.exports=function(req, res) {
+
 	var engineer = req.body.engineer,
 	serverError = {'err': null, 'message': undefined };
 	request('http://proetus.provo.novell.com/qmon/brief-tse-json.asp?tse='+ engineer, function (error, response, body) {
