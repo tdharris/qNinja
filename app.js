@@ -13,8 +13,10 @@ app.post('/getServiceRequests', function(req, res){
 });
 
 app.post('/sendMail', function(req, res){
-   sendMail(req, res);
-   api.ok(req, res, 'Request received by server!');
+   sendMail(req, res, function(err, message) {
+   	if(err) api.serverError(req, res, 'Uh oh!');
+   	else api.ok(req, res, message);
+   });
 });
 
 console.log('qNinja service is up.');

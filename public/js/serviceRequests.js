@@ -56,12 +56,12 @@ var myApp = angular.module('myApp', ['ngGrid']);
         timeout: 2000
       }).success(function (data, status, headers, config) {
           var res = JSON.parse(JSON.parse(data));
-          toastr.success('Successful Request.');
+          toastr.success('Received Service Requests.');
 
           $scope.myData = res;
 
         }).error(function (data, status, headers, config) {
-            toastr.error('Failed Request!');
+            toastr.error('Failed to retrieve service requests!');
             console.error(data);
         });
     };
@@ -83,6 +83,8 @@ var myApp = angular.module('myApp', ['ngGrid']);
             toastr.error(headers);
             console.error(data);   
         });
+
+      toastr.info('Request sent to server.');
     };
 
   }]);

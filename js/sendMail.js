@@ -7,7 +7,7 @@ var logme = require('logme'),
     validate = require('./validateEmailAddresses'),
     async = require('async');
 
-module.exports = function(req, res) {
+module.exports = function(req, res, done) {
  
     var task = req.body;
     task.report = [];
@@ -50,7 +50,7 @@ module.exports = function(req, res) {
                     var mailOptions = {
                         from: task.from,
                         to: recipients.join(','),
-                        cc: "support@novell.com",
+                        // cc: "support@novell.com",
                         subject: task.subject,
                         html: task.content + task.signature
                     };
@@ -81,15 +81,15 @@ module.exports = function(req, res) {
 
                     // Send mail through transport
                     transport.sendMail(mailOptions, function(error, response){
-                        
+                        var mailInfo = mailOptions.subject + ' to: ' + mailOptions.to + ' from: ' + mailOptions.from;
                         if(error){
-                            var message = 'Failed to send: <b style="color: red">' + error + '</b> | ' + task;
-                            logme.error('Failed to send: ' + error + task);
+                            var message = 'Failed to send: <b style="color: red">' + error + '</b> | ' + mailInfo;
+                            logme.error('Failed to send: ', error + ' | ' + mailInfo);
                         }
 
                         else{
-                            var message = 'Sent: <b style="color: green">' + response.message + ' ✔</b> | ' + mailOptions.subject + ' to: ' + mailOptions.to + ' from: ' + mailOptions.from;
-                            logme.info('Sent: ' + response.message + ' | ' + mailOptions.subject + ' to: ' + mailOptions.to + ' from: ' + mailOptions.from);
+                            var message = 'Sent: <b style="color: green">' + response.message + ' ✔</b> | ' + mailInfo;
+                            logme.info('Sent: ' + response.message + ' | ' + mailInfo);
                         }
 
                         transport.close();
@@ -115,16 +115,23 @@ module.exports = function(req, res) {
             });
 
             // Send report to engineer
+            // task.engineer + "@novell.com"
             notifyTransport.sendMail({
                 from: "qNinja <qNinja@mymobile.lab.novell.com>",
-                to: task.engineer + "@novell.com",
+                to: 'tylerdavidharris@gmail.com',
                 subject: "[qNinja] Email Report ✔",
                 html: pReport
             },
             function(error, response){
-                console.log('got to callback of report mail...');
-                if(error) logme.error(error);
-                else logme.info('Sent report to: ' + task.engineer + ' | ' + response.message);
+                if(error) { 
+                    logme.error(error);
+                    done(error, null);
+                }
+                else { 
+                    var message = 'Sent qNinja Report!';
+                    logme.info('Sent report to: ' + task.engineer + ' | ' + response.message);
+                    done(null, message);
+                }
                 notifyTransport.close();
             });
 
