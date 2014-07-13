@@ -50,7 +50,7 @@ module.exports = function(req, res) {
                     var mailOptions = {
                         from: task.from,
                         to: recipients.join(','),
-                        // cc: "support@novell.com",
+                        cc: "support@novell.com",
                         subject: task.subject,
                         html: task.content + task.signature
                     };
@@ -117,8 +117,8 @@ module.exports = function(req, res) {
             // Send report to engineer
             notifyTransport.sendMail({
                 from: "qNinja <qNinja@mymobile.lab.novell.com>",
-                to: "tylerdavidharris@gmail.com",
-                subject: "[qNinja] email report ✔",
+                to: task.engineer + "@novell.com",
+                subject: "[qNinja] Email Report ✔",
                 html: pReport
             },
             function(error, response){
