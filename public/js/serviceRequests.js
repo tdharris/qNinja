@@ -149,6 +149,8 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
           var res = JSON.parse(data);
           toastr.success(res);
           $scope.spinner.stop();
+          $scope.editorContent.setHTML('');
+          $scope.gridOptions.$gridScope.toggleSelectAll(false);
         }).error(function (data, status, headers, config) {
             // $("#userid").notify(data.message, { className: 'error', elementPosition:"botom left" });
             toastr.error(headers);

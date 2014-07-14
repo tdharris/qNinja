@@ -133,7 +133,7 @@ module.exports = function(req, res, done) {
                     done(error, null);
                 }
                 else { 
-                    var message = 'Sent qNinja Report!';
+                    var message = 'Sent qNinja Report to ' + task.engineer + '@novell.com';
                     logme.info('Sent report to: ' + task.engineer + ' | ' + response.message);
                     done(null, message);
                 }
