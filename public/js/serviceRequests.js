@@ -98,6 +98,7 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
       enableColumnResize: true,
       enableColumnReordering: true,
       showFilter:true,
+      showColumnMenu: true,
       columnDefs: [{field: 'sr', displayName: 'SR', enableCellEdit: false, width:'**'},
                    {field: 'status', displayName: 'Status', enableCellEdit: false, width:'***'},
                    {field: 'lastActivityDate', displayName: 'Last Activity Date', enableCellEdit: false, cellFilter: 'date:\'mediumDate\'', width:'***'},
