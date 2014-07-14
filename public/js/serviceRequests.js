@@ -22,12 +22,13 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
       "engineer": undefined,
       "password": undefined,
       "fromUser": true,
+      "ccSupport": true,
       "emails": $scope.selectedRows,
       "content": undefined,
       "signature": undefined
     };
 
-    $scope.setFromUser = function(element, boolean){
+    $scope.setFromUser = function(boolean){
       $scope.formData.fromUser = boolean;
       // TO-DO: Working on a way to replace my dependency on home.js (uses jQuery)
       // $scope.toggleClass(element, 'active');
@@ -108,6 +109,7 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
 
     $scope.getServiceRequests = function() {
       $scope.spinIt('srContent');
+      console.log($scope.formData.ccSupport);
 
       $scope.rememberMe();
       $http({

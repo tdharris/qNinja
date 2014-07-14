@@ -93,6 +93,9 @@ p {
     /*background-color: rgb(255, 255, 255);*/
     /*transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;*/
 }
+.checkbox {
+    margin-top: 10px !important;
+}
 .page-header { margin: 20px 0 20px; height: 56px; }
 tbody tr {
     cursor: pointer; cursor: hand;

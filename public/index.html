@@ -46,7 +46,7 @@
         <h1>qNinja</h1>
       </div>
       <div class="row clearfix">
-        <div class="col-md-4 column">
+        <div class="col-md-3 column">
           <div id="credentials" class="panel panel-alizarin">
             <div class="panel-heading">
               <h3 class="panel-title">
@@ -74,10 +74,14 @@
                     </label>
                   </div>
 
-                  <div class="checkbox">
-                   <label><input id="rememberMe" type="checkbox" /> Remember Me</label>
-                </div>
-
+                  <div>
+                    <div class="checkbox col-sm-6">
+                      <label><input id="ccSupport" type="checkbox" ng-model="formData.ccSupport" /> CC Support</label>
+                    </div>
+                    <div class="checkbox col-sm-6">
+                      <label><input id="rememberMe" type="checkbox" /> Remember Me</label>
+                    </div>
+                  </div>
 
                   <div>
                     <input type="submit" style="display: none;" /> 
@@ -88,7 +92,7 @@
             </div>
           </div>
         </div>
-        <div id="messageContent" class="col-md-8 column">
+        <div id="messageContent" class="col-md-9 column">
           <div class="panel panel-asbestos">
             <div class="panel-heading">
               <h3 class="panel-title">

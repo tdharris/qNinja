@@ -12,7 +12,7 @@ module.exports = function(req, res, done) {
     var task = req.body;
     task.report = [];
     // task.emails = ['email1.com', 'email@domain', 'email@domain.com'];
-            // .engineer, .password, .content, .signature, .emails[array], .fromUser[boolean]
+            // .engineer, .password, .content, .signature, .emails[array], .fromUser[boolean], .ccSupport[boolean]
     async.each(
         task.emails,
         function(item, callback) {
@@ -43,14 +43,20 @@ module.exports = function(req, res, done) {
                     // Prep mailOptions
                     task.subject = "SR " + item.sr + " - " + item.brief + " +EO";
                     task.from = "support@novell.com";
+                    var carbonCopy = "support@novell.com";
+                    // console.log('fromUser: ' + task.fromUser);
+                    // console.log('ccSupport: ' + task.ccSupport);
                     if(task.fromUser) {
                         task.from = task.engineer + "@novell.com";
+                    }
+                    if(!task.ccSupport) {
+                        carbonCopy = "";
                     }
 
                     var mailOptions = {
                         from: task.from,
                         to: recipients.join(','),
-                        cc: "support@novell.com",
+                        cc: carbonCopy,
                         subject: task.subject,
                         html: task.content + task.signature
                     };
