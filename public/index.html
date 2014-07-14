@@ -33,6 +33,7 @@
     <script type="text/javascript" src="lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="lib/toastr.min.js"></script>
     <script type="text/javascript" src="lib/angular-local-storage.js"></script>
+    <script type="text/javascript" src="lib/spin.min.js"></script>
 
     <script type="text/javascript" src="js/home.js"></script>
     <script type="text/javascript" src="js/serviceRequests.js"></script>
@@ -71,15 +72,18 @@
                     <label class="btn btn-default" data-toggle="fromUserSwitch" ng-model="formData.fromUser" ng-click="setFromUser(false)">
                       <input type="radio" name="fromUser"> support@novell.com
                     </label>
-
                   </div>
+
+                  <div class="checkbox">
+                   <label><input id="rememberMe" type="checkbox" /> Remember Me</label>
+                </div>
+
+
                   <div>
                     <input type="submit" style="display: none;" /> 
                   </div>
                 </div>
-                <div class="checkbox">
-                   <label><input id="rememberMe" type="checkbox" /> Remember Me</label>
-                </div>
+                
               </form>
             </div>
           </div>
@@ -96,7 +100,6 @@
 
               <div class="tabbable" id="tabs-187873">
                 <ul class="nav nav-tabs">
-                <input type="file" id="selectImg" style="visibility: hidden;">
                   <li class="active">
                     <a href="#panel-25518" data-toggle="tab">Content</a>
                   </li>
@@ -171,9 +174,9 @@
               </h3>
 
             </div>
-            <div class="panel-body">
+            <div id="srContent" class="panel-body">
 
-            <div class="gridStyle" ng-grid="gridOptions" class="table table-hover table-condensed"></div>
+              <div class="gridStyle" ng-grid="gridOptions" class="table table-hover table-condensed"></div>
 
             </div>
           </div>

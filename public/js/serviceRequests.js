@@ -35,22 +35,22 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
       // $scope.toggleClass(element, 'btn-default');
     }
 
-    // $scope.toggleClass = function(element, className){
-    //   if (!element || !className){
-    //       return;
-    //   }
+    $scope.toggleClass = function(element, className){
+      if (!element || !className){
+          return;
+      }
 
-    //   var classString = element.className, 
-    //       nameIndex = classString.indexOf(className);
+      var classString = element.className, 
+          nameIndex = classString.indexOf(className);
 
-    //   if (nameIndex == -1) {
-    //       classString += ' ' + className;
-    //   }
-    //   else {
-    //       classString = classString.substr(0, nameIndex) + classString.substr(nameIndex+className.length);
-    //   }
-    //   element.className = classString;
-    // }
+      if (nameIndex == -1) {
+          classString += ' ' + className;
+      }
+      else {
+          classString = classString.substr(0, nameIndex) + classString.substr(nameIndex+className.length);
+      }
+      element.className = classString;
+    }
 
     $scope.init = function(){
       // Local Storage: rememberMe (Retrieve from store)
@@ -67,7 +67,26 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
           document.getElementById('rememberMe').checked = true;
         }
 
+        $scope.srContent = document.getElementById('spinner');
+
       }
+    }
+
+    $scope.spinIt = function(element){
+
+      var target = document.getElementById(element);
+      $scope.spinner = new Spinner({
+        lines: 9,
+        length: 0,
+        width: 12,
+        radius: 26,
+        corners: 1.0,
+        rotate: 0,
+        trail: 48,
+        speed: 0.9,
+        direction: 1
+      }).spin(target);
+
     }
 
     $scope.gridOptions = {
@@ -88,6 +107,8 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
     };
 
     $scope.getServiceRequests = function() {
+      $scope.spinIt('srContent');
+
       $scope.rememberMe();
       $http({
         url: 'getServiceRequests',
@@ -99,16 +120,19 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
           var res = JSON.parse(JSON.parse(data));
           toastr.success('Received Service Requests.');
 
+          $scope.spinner.stop();
           $scope.myData = res;
 
         }).error(function (data, status, headers, config) {
             toastr.error('Failed to retrieve service requests!');
             console.error(data);
+            $scope.spinner.stop();
         });
 
     };
 
     $scope.sendMail = function(){
+      $scope.spinIt('srContent');
       $scope.rememberMe();
       $scope.formData.content = $scope.editorContent.getHTML();
       $scope.formData.signature = $scope.editorSignature.getHTML();
@@ -121,10 +145,12 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
       }).success(function (data, status, headers, config) {
           var res = JSON.parse(data);
           toastr.success(res);
+          $scope.spinner.stop();
         }).error(function (data, status, headers, config) {
             // $("#userid").notify(data.message, { className: 'error', elementPosition:"botom left" });
             toastr.error(headers);
-            console.error(data);   
+            console.error(data); 
+            $scope.spinner.stop();  
         });
 
       toastr.info('Request sent to server.');
