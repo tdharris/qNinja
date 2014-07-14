@@ -32,12 +32,13 @@
     <script type="text/javascript" src="lib/notify-combined.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="lib/toastr.min.js"></script>
+    <script type="text/javascript" src="lib/angular-local-storage.js"></script>
 
     <script type="text/javascript" src="js/home.js"></script>
     <script type="text/javascript" src="js/serviceRequests.js"></script>
 
   </head>
-  <body ng-controller="SRCtrl">
+  <body ng-controller="SRCtrl" ng-init="init()">
     <div class="container-fluid main">
       <div class="page-header">
         <img class="pull-left logo" src="img/ninja.png">
@@ -48,13 +49,14 @@
           <div id="credentials" class="panel panel-alizarin">
             <div class="panel-heading">
               <h3 class="panel-title">
+                <i class="glyphicon glyphicon-user space-right"></i>
                 Novell Login
               </h3>
             </div>
             <div class="panel-body">
-              <form role="form">
+              <form ng-submit="getServiceRequests()">
                 <div class="form-group">
-                   <label for="userid">User ID</label><input ng-model="formData.engineer" class="form-control" id="userid" required />
+                   <label for="userid">User ID</label><input ng-model="formData.engineer" ng-blur="getServiceRequests()" class="form-control" id="userid" required />
                 </div>
                 <div class="form-group">
                    <label for="password">Password</label><input ng-model="formData.password" type="password" class="form-control" id="password" />
@@ -63,20 +65,20 @@
                   <label for="exampleInputEmail1">Send From</label><br>
 
                   <div class="btn-group btn-toggle" data-toggle="buttons">
-                    <label class="btn btn-primary active" data-toggle="fromUserSwitch" ng-model="formData.fromUser" ng-click="formData.fromUser=true">
+                    <label class="btn btn-primary active" data-toggle="fromUserSwitch" ng-model="formData.fromUser" ng-click="setFromUser(true)">
                       <input type="radio" name="fromUser"> {{formData.engineer}}@novell.com
                     </label>
-                    <label class="btn btn-default" data-toggle="fromUserSwitch" ng-model="formData.fromUser" ng-click="formData.fromUser=false">
+                    <label class="btn btn-default" data-toggle="fromUserSwitch" ng-model="formData.fromUser" ng-click="setFromUser(false)">
                       <input type="radio" name="fromUser"> support@novell.com
                     </label>
-                  </div>
 
+                  </div>
                   <div>
-                    <button ng-click="getServiceRequests()" type="button" class="btn btn-success btn-default pull-right">Refresh List</button>
+                    <input type="submit" style="display: none;" /> 
                   </div>
                 </div>
                 <div class="checkbox">
-                   <label><input type="checkbox" /> Remember Me</label>
+                   <label><input id="rememberMe" type="checkbox" /> Remember Me</label>
                 </div>
               </form>
             </div>
@@ -86,7 +88,8 @@
           <div class="panel panel-asbestos">
             <div class="panel-heading">
               <h3 class="panel-title">
-                Message Details
+                <i class="glyphicon glyphicon-list space-right"></i>
+                Message & Signature
               </h3>
             </div>
             <div class="panel-body">
@@ -121,9 +124,7 @@
 
                       <!-- Create the editor container -->
                       <div id="content" class="editor-container">
-                        <p>Hello World!</p>
-                        <p>Some initial <b>bold</b> text</p>
-                        <p><br></p>
+                        <!-- Default Message Content -->
                       </div>
                     </div>
 
@@ -147,9 +148,7 @@
 
                       <!-- Create the editor container -->
                       <div id="signature" class="editor-container">
-                        <p>Hello World!</p>
-                        <p>Some initial <b>bold</b> text</p>
-                        <p><br></p>
+                        <!-- Default Signature Content -->
                       </div>
                     </div>
                   </div>
@@ -166,8 +165,11 @@
           <div class="panel panel-midnightblue">
             <div class="panel-heading">
               <h3 class="panel-title">
+                <i class="glyphicon glyphicon-cloud-download space-right"></i>
                 Service Requests
+                <i ng-click="getServiceRequests()" class="glyphicon glyphicon-refresh pull-right pointer"></i>
               </h3>
+
             </div>
             <div class="panel-body">
 

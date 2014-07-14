@@ -1,7 +1,7 @@
 
-var myApp = angular.module('myApp', ['ngGrid']);
-
-  myApp.controller('SRCtrl', ['$scope', '$http', function($scope,$http) {
+var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
+  
+  myApp.controller('SRCtrl', ['$scope', '$http', 'localStorageService', function($scope,$http,localStorageService) {
 
     // Initialize editor with custom theme and modules
     $scope.editorContent = new Quill('#content', {
@@ -27,6 +27,49 @@ var myApp = angular.module('myApp', ['ngGrid']);
       "signature": undefined
     };
 
+    $scope.setFromUser = function(element, boolean){
+      $scope.formData.fromUser = boolean;
+      // TO-DO: Working on a way to replace my dependency on home.js (uses jQuery)
+      // $scope.toggleClass(element, 'active');
+      // $scope.toggleClass(element, 'btn-primary');
+      // $scope.toggleClass(element, 'btn-default');
+    }
+
+    // $scope.toggleClass = function(element, className){
+    //   if (!element || !className){
+    //       return;
+    //   }
+
+    //   var classString = element.className, 
+    //       nameIndex = classString.indexOf(className);
+
+    //   if (nameIndex == -1) {
+    //       classString += ' ' + className;
+    //   }
+    //   else {
+    //       classString = classString.substr(0, nameIndex) + classString.substr(nameIndex+className.length);
+    //   }
+    //   element.className = classString;
+    // }
+
+    $scope.init = function(){
+      // Local Storage: rememberMe (Retrieve from store)
+      if(localStorageService.isSupported){
+        console.log('Retrieving values from localStorage');
+        $scope.formData.engineer = localStorageService.get('engineer'),
+        $scope.formData.password = localStorageService.get('password'),
+        $scope.formData.fromUser = localStorageService.get('fromUser'),
+        $scope.formData.signature = localStorageService.get('signature');
+
+        if ($scope.formData.signature !== undefined) $scope.editorSignature.setHTML($scope.formData.signature);
+
+        if($scope.formData.engineer || $scope.formData.password || $scope.formData.fromUser || $scope.formData.signature) {
+          document.getElementById('rememberMe').checked = true;
+        }
+
+      }
+    }
+
     $scope.gridOptions = {
       data: 'myData',
       selectedItems: $scope.selectedRows,
@@ -45,9 +88,7 @@ var myApp = angular.module('myApp', ['ngGrid']);
     };
 
     $scope.getServiceRequests = function() {
-      console.log('clicked');
-      console.log($scope.engineer);
-
+      $scope.rememberMe();
       $http({
         url: 'getServiceRequests',
         method: "POST",
@@ -64,9 +105,11 @@ var myApp = angular.module('myApp', ['ngGrid']);
             toastr.error('Failed to retrieve service requests!');
             console.error(data);
         });
+
     };
 
     $scope.sendMail = function(){
+      $scope.rememberMe();
       $scope.formData.content = $scope.editorContent.getHTML();
       $scope.formData.signature = $scope.editorSignature.getHTML();
       
@@ -86,5 +129,21 @@ var myApp = angular.module('myApp', ['ngGrid']);
 
       toastr.info('Request sent to server.');
     };
+
+    $scope.rememberMe = function() {
+      if(localStorageService.isSupported) {
+        console.log('Checking values for rememberMe', document.getElementById('rememberMe').checked);
+        if(document.getElementById('rememberMe').checked){
+          console.log('Saving values to localStorage');
+          localStorageService.set('engineer', $scope.formData.engineer);
+          localStorageService.set('password', $scope.formData.password);
+          localStorageService.set('fromUser', $scope.formData.fromUser);
+          localStorageService.set('signature', $scope.editorSignature.getHTML());
+      } else {
+        localStorageService.clearAll();
+      }
+    }
+      
+    }
 
   }]);

@@ -20,4 +20,6 @@ $( document ).ready(function() {
 	    $(this).find('.btn').toggleClass('btn-default');
     });
 
+    // getServiceRequests on enter keypress from userid field
+
 });

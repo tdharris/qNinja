@@ -20,7 +20,10 @@
     width: auto;
     min-height: 300px;
 }
-
+.space-right { margin-right: 5px; }
+h3 {
+    font-weight: normal;
+}
 .ngViewport { max-height: 600px; height: auto !important; min-height: 200px !important; }
 /*.ngCanvas, .ngViewport, .ngRow, .ngFooterPanel, .ngTopPanel { width: 100% !important; }*/
 /*.ngRow { width: 100% !important; }*/
@@ -29,6 +32,9 @@ p {
     font-family: 'Cardo', Georgia, Times, serif;
     font-size: 18px;
     line-height: 25px;
+}
+.pointer {
+    cursor:pointer;
 }
 .logo {
     max-width:60px;
