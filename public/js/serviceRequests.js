@@ -92,6 +92,7 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
 
     $scope.gridOptions = {
       data: 'myData',
+      plugins: [new ngGridFlexibleHeightPlugin()],
       selectedItems: $scope.selectedRows,
       enableRowSelection: true,
       enableCellEditOnFocus: true,
@@ -99,12 +100,15 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
       enableColumnReordering: true,
       showFilter:true,
       showColumnMenu: true,
-      columnDefs: [{field: 'sr', displayName: 'SR', enableCellEdit: false, width:'**'},
-                   {field: 'status', displayName: 'Status', enableCellEdit: false, width:'***'},
-                   {field: 'lastActivityDate', displayName: 'Last Activity Date', enableCellEdit: false, cellFilter: 'date:\'mediumDate\'', width:'***'},
-                   {field: 'primaryContact', displayName: 'Primary', enableCellEdit: true, width:'****'},
-                   {field: 'alternateContact', displayName: 'Alternate', enableCellEdit: true, width:'****'},
-                   {field: 'brief', displayName: 'Brief Description', enableCellEdit: true, width:'********'}],
+      columnDefs: [{field: 'createdOn', displayName: 'Created On', enableCellEdit: false, width:'**', cellClass: 'grid-align-center', groupable: false},
+                   {field: 'sr', displayName: 'SR', enableCellEdit: false, width:'**', groupable: false},
+                   {field: 'customerName', displayName: 'Name', enableCellEdit: false, width:'**', groupable: false},
+                   {field: 'primaryContact', displayName: 'Primary', enableCellEdit: true, width:'****', groupable: false},
+                   {field: 'alternateContact', displayName: 'Alternate', enableCellEdit: true, width:'****', groupable: false},
+                   {field: 'status', displayName: 'Status', enableCellEdit: false, width:'***', groupable: false},
+                   {field: 'brief', displayName: 'Brief Description', enableCellEdit: true, width:'******', groupable: false},
+                   {field: 'lastActivityDate', displayName: 'Last Activity Date', enableCellEdit: false, cellFilter: 'date:\'mediumDate\'', width:'**', cellClass: 'grid-align-center', groupable: false},
+                   {field: 'lastActivity', displayName: 'Last Activity', enableCellEdit: false, width:'******', groupable: false}],
       sortInfo: { fields: ['lastActivityDate'], directions: ['asc'] }
     };
 
@@ -121,6 +125,9 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
         timeout: 2000
       }).success(function (data, status, headers, config) {
           var res = JSON.parse(JSON.parse(data));
+          res.forEach(function(item){ 
+            item.lastActivityDate = new Date(Date.parse(item.lastActivityDate)); 
+          });
           toastr.success('Received Service Requests.');
 
           $scope.spinner.stop();
