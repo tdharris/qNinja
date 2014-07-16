@@ -1,9 +1,8 @@
 var express = require('express'),
     app = module.exports = express(),
     bodyParser = require('body-parser'),
-    api = require('express-api-helper'),
     getServiceRequests = require('./js/getServiceRequests'),
-    sendMail = require('./js/sendMail');
+    requestHandler = require('./js/requestHandler');
 
 app.use(express.static(__dirname+'/public'))
    .use(bodyParser.json());
@@ -12,11 +11,10 @@ app.post('/getServiceRequests', function(req, res){
 	getServiceRequests(req, res);
 });
 
-app.post('/sendMail', function(req, res){
-   sendMail(req, res, function(err, message) {
-   	if(err) api.serverError(req, res, 'Uh oh!');
-   	else api.ok(req, res, message);
-   });
+app.post('/handleRequest', function(req, res){
+  requestHandler(req, res, function(){
+    console.log('done!');
+  });
 });
 
 console.log('qNinja service is up.');

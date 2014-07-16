@@ -1,6 +1,6 @@
 var nodemailer = require('nodemailer');
 
-module.exports = function createNovellTransport(engineer, password) {
+module.exports = function (engineer, password) {
 
     // Create transport for task of [mail]
     return nodemailer.createTransport("SMTP", {

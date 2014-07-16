@@ -1,6 +1,7 @@
 var async = require('async'),
     processEmail = require('./process-email'),
-    report = require('./report');
+    report = require('./report'),
+    api = require('express-api-helper');
 
 
 // create a global queue that your whole server shares
@@ -13,9 +14,10 @@ var queue = async.queue(function(taskHandler, done) {
 // http request handler
 module.exports = function(req, res, next) {
 
-    var task = req.body;
+    var task = req.body,
+        handler = require('./taskHandler');
 
-    // create a task handler that does a eachLimit or w/e on the emails
+    // create a task handler that does a eachLimit on the emails
     // it will processEmail and sendReport when done
     var taskHandler = {
         process: function(done) {
@@ -23,7 +25,8 @@ module.exports = function(req, res, next) {
             report.initReport(task.engineer);
             
             // How do I create config object: item, task, transport?
-            var transport = require('./createNovellTransport')(),
+            var transport = require('./createNovellTransport');
+
                 config = {
                     // item is only accessible as first parameter in processEmail.. 
                     // not sure how to take that and add it to config along with task and transport...
@@ -45,6 +48,7 @@ module.exports = function(req, res, next) {
     queue.push(taskHandler);
     
     // send response that their work has been queued
-    res.send('we got it!');
+    // api.serverError(req, res, 'Uh oh!');
+    api.ok(req, res, 'Task has been queued!');
 };
 
