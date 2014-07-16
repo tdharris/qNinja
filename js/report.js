@@ -1,32 +1,32 @@
-var nodemailer = require('nodemailer');
+var nodemailer = require('nodemailer'),
+    logme = require('logme'),
+    transport = require('./transport');
 
-exports.initReport = function(task) {
+exports.init = function(task) {
 	
-	var report = {
+	this.report = {
 
 		mailOptions: {
 			from: "qNinja <qNinja@mymobile.lab.novell.com>",
-		        to: task.engineer + "@novell.com",
-		        subject: "[qNinja] Email Report ✔",
-		        html: null
-	    	},
-	    	messages: []
-	
-	}
+	        to: task.engineer + "@novell.com",
+	        subject: "[qNinja] Email Report ✔",
+	        html: null
+    	},
+    	messages: ['abc123']
+    }
 
 }
 
 exports.saveToReport = function(message) {
 
-    report.messages.push(message);
+    this.report.messages.push(message);
 
 }
 
-function getReport() {
+exports.getReport = function() {
 
 	var pReport = '';
-
-    report.messages.forEach(function(item, index, array){
+    this.report.messages.forEach(function(item, index, array){
         pReport += item + "<br>";
     });
 
@@ -36,15 +36,16 @@ function getReport() {
 
 exports.sendReport = function(done) {
 
-    notifyTransport = nodemailer.createTransport("Direct");
+    this.report.mailOptions.html = this.getReport();
 
-    report.mailOptions.html = getReport();
+    var self = this;
 
     // Send report to engineer
-    notifyTransport.sendMail(report.mailOptions,
+    console.log('Sending Report through Notify Transport: \n', transport.notify);
+    transport.notify.sendMail(self.report.mailOptions,
     function(error, response){
         // close the transport first
-        notifyTransport.close();
+        transport.notify.close();
         
         // exit early if there's an error
         if(error) { 
@@ -52,8 +53,8 @@ exports.sendReport = function(done) {
             return done(error, null);
         }
 
-        var message = 'Sent qNinja Report to ' + report.mailOptions.engineer;
-        logme.info('Sent report to: ' + report.mailOptions.engineer + ' | ' + response.message);
+        var message = 'Sent qNinja Report to ' + self.report.mailOptions.engineer;
+        logme.info('Sent report to: ' + self.report.mailOptions.engineer + ' | ' + response.message);
         return done(null, message);
     });
 

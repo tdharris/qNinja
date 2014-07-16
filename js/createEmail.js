@@ -1,23 +1,24 @@
-module.exports = function createEmail(task, recipients) {
+module.exports = function createEmail(mail, recipients) {
 
     // Prep mailOptions
     var from = "support@novell.com",
         carbonCopy = "support@novell.com";
 
-    if(task.fromUser) {
-        from = task.engineer + "@novell.com";
+    if(mail.fromUser) {
+        from = mail.engineer + "@novell.com";
     }
-    if(!task.ccSupport) {
+    if(!mail.ccSupport) {
         carbonCopy = "";
     }
 
-    var mailOptions = {
+    mailOptions = {
         from: from,
         to: recipients.join(','),
         cc: carbonCopy,
-        subject: "SR " + item.sr + " - " + item.brief + " +EO",
-        html: task.content + task.signature
+        subject: "SR " + mail.sr + " - " + mail.brief + " +EO",
+        html: mail.content + mail.signature
     };
 
+    // console.log('\nmailOptions: ', mailOptions);
     return mailOptions;
 }

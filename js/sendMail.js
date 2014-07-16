@@ -1,20 +1,21 @@
 var logme = require('logme');
 
-module.exports = function sendMail(transport, mailOptions, callback) {
+module.exports = function sendMail(mail, callback) {
 
-    var eventHeader = '[' + task.engineer + '] [mail] ';
+    var eventHeader = '[' + mail.engineer + '] [mail] ';
 
     // Debug
     // console.log(eventHeader + ' sending ' + mailOptions);
 
     // Send mail through transport
-    transport.sendMail(mailOptions, function(error, response){
+    console.log('\n\nNovell Transport: \n', mail.transport, '\n\n');
+    mail.transport.sendMail(mail.mailOptions, function(error, response){
 
         // close the transport first
-        transport.close();
+        mail.transport.close();
 
         var message,
-            mailInfo = mailOptions.subject + ' to: ' + mailOptions.to + ' from: ' + mailOptions.from;
+            mailInfo = mail.mailOptions.subject + ' to: ' + mail.mailOptions.to + ' from: ' + mail.mailOptions.from;
             
         if(error){
             message = 'Failed to send: <b style="color: red">' + error + '</b> | ' + mailInfo;

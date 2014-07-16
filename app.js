@@ -11,9 +11,9 @@ app.post('/getServiceRequests', function(req, res){
 	getServiceRequests(req, res);
 });
 
-app.post('/handleRequest', function(req, res){
+app.post('/sendMail', function(req, res){
   requestHandler(req, res, function(){
-    console.log('done!');
+    console.log('/sendMail callback in app.js reports task is done!');
   });
 });
 
