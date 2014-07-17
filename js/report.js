@@ -2,31 +2,35 @@ var nodemailer = require('nodemailer'),
     logme = require('logme'),
     transport = require('./transport');
 
-exports.init = function(task) {
-	
-	this.report = {
+var report,
+    transport;
 
+exports.init = function(engineer, transport) {
+    
+	report = {
+
+        transport: transport,
 		mailOptions: {
 			from: "qNinja <qNinja@mymobile.lab.novell.com>",
-	        to: task.engineer + "@novell.com",
+	        to: engineer + "@novell.com",
 	        subject: "[qNinja] Email Report ✔",
 	        html: null
     	},
-    	messages: ['abc123']
+    	messages: []
     }
 
 }
 
 exports.saveToReport = function(message) {
 
-    this.report.messages.push(message);
+    report.messages.push(message);
 
 }
 
-exports.getReport = function() {
+function getReport() {
 
 	var pReport = '';
-    this.report.messages.forEach(function(item, index, array){
+    report.messages.forEach(function(item, index, array){
         pReport += item + "<br>";
     });
 
@@ -34,18 +38,20 @@ exports.getReport = function() {
 
 }
 
-exports.sendReport = function(done) {
+exports.sendReport = function() {
 
-    this.report.mailOptions.html = this.getReport();
+    // Close the smtp connection pool
+    transport.get('novell').close();
 
-    var self = this;
+    report.mailOptions.html = getReport();
 
     // Send report to engineer
-    console.log('Sending Report through Notify Transport: \n', transport.notify);
-    transport.notify.sendMail(self.report.mailOptions,
-    function(error, response){
+    // console.log('Sending Report: \n', report.transport);
+    // console.log(report.mailOptions);
+
+    report.transport.sendMail(report.mailOptions, function(error, response){
         // close the transport first
-        transport.notify.close();
+        report.transport.close();
         
         // exit early if there's an error
         if(error) { 
@@ -53,9 +59,8 @@ exports.sendReport = function(done) {
             return done(error, null);
         }
 
-        var message = 'Sent qNinja Report to ' + self.report.mailOptions.engineer;
-        logme.info('Sent report to: ' + self.report.mailOptions.engineer + ' | ' + response.message);
-        return done(null, message);
+        logme.info('Sent Report:', response.message + ' | To:', report.mailOptions.to);
+
     });
 
 };

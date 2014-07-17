@@ -1,7 +1,6 @@
 .main {
     margin-top: 15px;
 }
-
 @font-face {
   font-family: 'Allan';
   font-style: normal;
@@ -66,7 +65,7 @@ p {
     height: 27px !important;
     line-height: 37px !important;
 }
-
+.tabbable { height: 100%;}
 .quill-wrapper {
   background-color: #fff;
   border-left: 1px solid #ccc;

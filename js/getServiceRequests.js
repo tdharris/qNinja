@@ -37,7 +37,7 @@ module.exports=function(req, res) {
 			if (serverError.err){
 				api.serverError(req, res, serverError);
 			} else {
-				logme.info('Successful response from Proetus for engineer: ' + engineer);
+				// logme.info('Successful response from Proetus for engineer: ' + engineer);
 				api.ok(req, res, JSON.stringify(data));
 			}
 

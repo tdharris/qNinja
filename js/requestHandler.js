@@ -1,4 +1,5 @@
 var async = require('async'),
+    logme = require('logme'),
     processEmail = require('./processEmail'),
     report = require('./report'),
     api = require('express-api-helper'),
@@ -22,22 +23,22 @@ module.exports = function(req, res, next) {
     var taskHandler = {
         process: function(done) {
 
-            report.init(task.engineer);
             transport.init(task.engineer, task.password);
-
+            report.init(task.engineer, transport.get('notify'));
+            
             // Append what is needed for each mail item to process
             task.emails.forEach(function(mail){
                 mail.fromUser = task.fromUser;
                 mail.ccSupport = task.ccSupport;
                 mail.content = task.content;
                 mail.signature = task.signature;
-                mail.transport = transport.novell;
+                mail.transport = transport.get('novell');
             });
 
             async.eachLimit(
                 task.emails, 3, 
                 processEmail, 
-                report.sendReport(done)
+                report.sendReport
             );
 
         }
@@ -48,6 +49,5 @@ module.exports = function(req, res, next) {
     // send response that their work has been queued
     // api.serverError(req, res, 'Uh oh!');
     api.ok(req, res, 'Task has been queued!');
-    next();
 };
 

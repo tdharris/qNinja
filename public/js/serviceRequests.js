@@ -1,7 +1,27 @@
 
-var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
-  
-  myApp.controller('SRCtrl', ['$scope', '$http', 'localStorageService', function($scope,$http,localStorageService) {
+var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstrap']);
+
+  myApp.controller('SRCtrl', ['$scope', '$http', 'localStorageService', '$modal', function($scope,$http,localStorageService,$modal) {
+    
+    $scope.init = function(){
+      // Local Storage: rememberMe (Retrieve from store)
+      if(localStorageService.isSupported){
+
+        $scope.formData.engineer = localStorageService.get('engineer'),
+        $scope.formData.password = localStorageService.get('password'),
+        $scope.formData.fromUser = localStorageService.get('fromUser'),
+        $scope.formData.signature = localStorageService.get('signature');
+
+        if($scope.formData.engineer || $scope.formData.password || $scope.formData.fromUser || $scope.formData.signature) {
+          document.getElementById('rememberMe').checked = true;
+        }
+
+        // if ($scope.formData.engineer !== undefined) $scope.getServiceRequests();
+        if ($scope.formData.signature !== undefined) $scope.editorSignature.setHTML($scope.formData.signature);
+        $scope.srContent = document.getElementById('spinner');
+
+      }
+    }
 
     // Initialize editor with custom theme and modules
     $scope.editorContent = new Quill('#content', {
@@ -22,7 +42,7 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
       "engineer": undefined,
       "password": undefined,
       "fromUser": true,
-      "ccSupport": true,
+      "ccSupport": '',
       "emails": $scope.selectedRows,
       "content": undefined,
       "signature": undefined
@@ -51,26 +71,6 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
           classString = classString.substr(0, nameIndex) + classString.substr(nameIndex+className.length);
       }
       element.className = classString;
-    }
-
-    $scope.init = function(){
-      // Local Storage: rememberMe (Retrieve from store)
-      if(localStorageService.isSupported){
-        console.log('Retrieving values from localStorage');
-        $scope.formData.engineer = localStorageService.get('engineer'),
-        $scope.formData.password = localStorageService.get('password'),
-        $scope.formData.fromUser = localStorageService.get('fromUser'),
-        $scope.formData.signature = localStorageService.get('signature');
-
-        if ($scope.formData.signature !== undefined) $scope.editorSignature.setHTML($scope.formData.signature);
-
-        if($scope.formData.engineer || $scope.formData.password || $scope.formData.fromUser || $scope.formData.signature) {
-          document.getElementById('rememberMe').checked = true;
-        }
-
-        $scope.srContent = document.getElementById('spinner');
-
-      }
     }
 
     $scope.spinIt = function(element){
@@ -112,10 +112,42 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
       sortInfo: { fields: ['lastActivityDate'], directions: ['asc'] }
     };
 
-    $scope.getServiceRequests = function() {
-      $scope.spinIt('srContent');
-      console.log($scope.formData.ccSupport);
+    // angular-ui bootstrap modal
+    $scope.open = function (size) {
 
+      // $scope.formData.content = $scope.editorContent.getHTML();
+      // $scope.formData.signature = $scope.editorSignature.getHTML();
+      $scope.items = $scope.editorContent.getHTML() + $scope.editorSignature.getHTML();
+
+      $scope.modalInstance = $modal.open({
+        templateUrl: 'myModalContent.html',
+        controller: $scope.ModalInstanceCtrl,
+        size: size,
+        resolve: {
+          items: function () {
+            return $scope.items;
+          }
+        }
+      });
+
+    };
+
+    $scope.ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+
+      $scope.items = items;
+
+      $scope.ok = function () {
+        $modalInstance.close();
+      };
+
+      $scope.cancel = function () {
+        $modalInstance.dismiss();
+      };
+    };
+
+    $scope.getServiceRequests = function() {
+
+      $scope.spinIt('srContent');
       $scope.rememberMe();
       $http({
         url: 'getServiceRequests',
@@ -165,22 +197,21 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule']);
             $scope.spinner.stop();  
         });
 
-      toastr.info('Request sent to server.');
     };
 
     $scope.rememberMe = function() {
+
       if(localStorageService.isSupported) {
-        console.log('Checking values for rememberMe', document.getElementById('rememberMe').checked);
+
         if(document.getElementById('rememberMe').checked){
-          console.log('Saving values to localStorage');
           localStorageService.set('engineer', $scope.formData.engineer);
           localStorageService.set('password', $scope.formData.password);
           localStorageService.set('fromUser', $scope.formData.fromUser);
           localStorageService.set('signature', $scope.editorSignature.getHTML());
-      } else {
-        localStorageService.clearAll();
+        } else {
+          localStorageService.clearAll();
+        }
       }
-    }
       
     }
 

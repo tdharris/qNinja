@@ -26,16 +26,18 @@
 
     <!-- Lib Scripts -->
     <script type="text/javascript" src="lib/angular.min.js"></script>
+    <script type="text/javascript" src="lib/ui-bootstrap-tpls-0.11.0.min.js"></script>
     <script type="text/javascript" src="lib/jquery.min.js"></script>
+
+    <script type="text/javascript" src="lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
+
     <script type="text/javascript" src="lib/quill.js"></script>
     <script type="text/javascript" src="lib/ng-grid/ng-grid-2.0.11.min.js"></script>
     <script type="text/javascript" src="lib/notify-combined.min.js"></script>
-    <script type="text/javascript" src="lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="lib/toastr.min.js"></script>
     <script type="text/javascript" src="lib/angular-local-storage.js"></script>
     <script type="text/javascript" src="lib/spin.min.js"></script>
     <script type="text/javascript" src="lib/ng-grid-flexible-height.js"></script>
-
     <script type="text/javascript" src="js/home.js"></script>
     <script type="text/javascript" src="js/serviceRequests.js"></script>
 
@@ -48,24 +50,29 @@
       </div>
       <div class="row clearfix">
         <div class="col-md-3 column">
+
           <div id="credentials" class="panel panel-alizarin">
             <div class="panel-heading">
               <h3 class="panel-title">
                 <i class="glyphicon glyphicon-user space-right"></i>
                 Novell Login
+                <i ng-click="getServiceRequests()" class="glyphicon glyphicon-refresh pull-right pointer"></i>
               </h3>
             </div>
-            <div class="panel-body">
+
+            <div class="panel-body"> 
               <form ng-submit="getServiceRequests()">
+
                 <div class="form-group">
-                   <label for="userid">User ID</label><input ng-model="formData.engineer" ng-blur="getServiceRequests()" class="form-control" id="userid" required />
+                   <label for="userid">User ID</label><input ng-model="formData.engineer" class="form-control" id="userid" required />
                 </div>
+
                 <div class="form-group">
                    <label for="password">Password</label><input ng-model="formData.password" type="password" class="form-control" id="password" />
                 </div>
+
                 <div class="form-group">
                   <label for="exampleInputEmail1">Send From</label><br>
-
                   <div class="btn-group btn-toggle" data-toggle="buttons">
                     <label class="btn btn-primary active" data-toggle="fromUserSwitch" ng-model="formData.fromUser" ng-click="setFromUser(true)">
                       <input type="radio" name="fromUser"> {{formData.engineer}}@novell.com
@@ -74,31 +81,52 @@
                       <input type="radio" name="fromUser"> support@novell.com
                     </label>
                   </div>
+                </div>
 
-                  <div>
-                    <div class="checkbox col-sm-6">
-                      <label><input id="ccSupport" type="checkbox" ng-model="formData.ccSupport" /> CC Support</label>
+                <div class="form-group">
+                  <label>CC Siebel Support</label><br>
+                    <div class="btn-group">
+                        <label class="btn btn-success" ng-model="formData.ccSupport" btn-radio="''">Nope!</label>
+                        <label class="btn btn-success" ng-model="formData.ccSupport" btn-radio="'support@novell.com'">Public</label>
+                        <label class="btn btn-success" ng-model="formData.ccSupport" btn-radio="'internalAddress'">Internal</label>
                     </div>
-                    <div class="checkbox col-sm-6">
-                      <label><input id="rememberMe" type="checkbox" /> Remember Me</label>
-                    </div>
-                  </div>
+                </div>
 
-                  <div>
-                    <input type="submit" style="display: none;" /> 
+                <div class="form-group">
+                  <div class="checkbox">
+                    <label><input id="rememberMe" type="checkbox" /> Remember Me</label>
                   </div>
                 </div>
-                
+
+                <div>
+                  <input type="submit" style="display: none;" /> 
+                </div>
+
               </form>
             </div>
+                
           </div>
         </div>
+<script type="text/ng-template" id="myModalContent.html">
+  <div class="modal-header">
+      <h3 class="modal-title">Im a modal!</h3>
+  </div>
+  <div class="modal-body">
+    {{ items }}
+  </div>
+  <div class="modal-footer">
+      <button class="btn btn-primary" ng-click="ok()">OK</button>
+      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+  </div>
+</script>
+<!-- <button class="btn btn-default" ng-click="open('lg')">Large modal</button> -->
+
         <div id="messageContent" class="col-md-9 column">
           <div class="panel panel-asbestos">
             <div class="panel-heading">
               <h3 class="panel-title">
                 <i class="glyphicon glyphicon-list space-right"></i>
-                Message & Signature
+                Message  /  Signature
               </h3>
             </div>
             <div class="panel-body">

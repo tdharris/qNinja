@@ -4,7 +4,7 @@ var setops = require('setops'),
 
 module.exports = function getRecipients(array) {
     var recipients = [];
-    console.log('Parsing through: ', array);
+    // console.log('Parsing through: ', array);
     array.forEach(function(item, index, array) {
         if(!myUtil.isEmpty(item)) {
             recipients = setops(recipients).union(item.split(','));
@@ -12,7 +12,7 @@ module.exports = function getRecipients(array) {
     });
     // recipients = recipients.filter(Boolean);
 
-    console.log('Parsed recipients: ', recipients);
+    // console.log('Parsed recipients: ', recipients);
     
     // validate emails and return them here
     return validate(recipients);

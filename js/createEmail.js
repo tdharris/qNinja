@@ -1,20 +1,18 @@
+var myUtil = require('./myUtil');
+
 module.exports = function createEmail(mail, recipients) {
 
     // Prep mailOptions
-    var from = "support@novell.com",
-        carbonCopy = "support@novell.com";
+    var from = "support@novell.com";
 
-    if(mail.fromUser) {
+    if(mail.fromUser || myUtil.isEmpty(fromUser)) {
         from = mail.engineer + "@novell.com";
-    }
-    if(!mail.ccSupport) {
-        carbonCopy = "";
     }
 
     mailOptions = {
         from: from,
         to: recipients.join(','),
-        cc: carbonCopy,
+        // cc: mail.ccSupport,
         subject: "SR " + mail.sr + " - " + mail.brief + " +EO",
         html: mail.content + mail.signature
     };

@@ -12,9 +12,7 @@ app.post('/getServiceRequests', function(req, res){
 });
 
 app.post('/sendMail', function(req, res){
-  requestHandler(req, res, function(){
-    console.log('/sendMail callback in app.js reports task is done!');
-  });
+  requestHandler(req, res);
 });
 
 console.log('qNinja service is up.');
