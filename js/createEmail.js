@@ -5,7 +5,7 @@ module.exports = function createEmail(mail, recipients) {
     // Prep mailOptions
     var from = "support@novell.com";
 
-    if(mail.fromUser || myUtil.isEmpty(fromUser)) {
+    if(mail.fromUser || myUtil.isEmpty(mail.fromUser)) {
         from = mail.engineer.toLowerCase() + "@novell.com";
     }
 
