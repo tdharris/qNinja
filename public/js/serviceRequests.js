@@ -21,6 +21,8 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
         $scope.srContent = document.getElementById('spinner');
 
       }
+
+      $scope.blurMe = document.getElementById('blurMe');
     }
 
     // Initialize editor with custom theme and modules
@@ -42,7 +44,7 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
       "engineer": undefined,
       "password": undefined,
       "fromUser": true,
-      "ccSupport": '',
+      "ccSupport": 'support@novell.com',
       "emails": $scope.selectedRows,
       "content": undefined,
       "signature": undefined
@@ -75,7 +77,9 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
 
     $scope.spinIt = function(element){
 
-      var target = document.getElementById(element);
+      $scope.toggleClass($scope.blurMe, 'blur');
+      // var target = document.getElementById(element);
+      var target = document.body;
       $scope.spinner = new Spinner({
         lines: 9,
         length: 0,
@@ -147,7 +151,8 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
 
     $scope.getServiceRequests = function() {
 
-      $scope.spinIt('srContent');
+      $scope.spinIt('spinMe'); 
+
       $scope.rememberMe();
       $http({
         url: 'getServiceRequests',
@@ -161,20 +166,19 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
             item.lastActivityDate = new Date(Date.parse(item.lastActivityDate)); 
           });
           toastr.success('Received Service Requests.');
-
-          $scope.spinner.stop();
+          $scope.toggleClass($scope.blurMe, 'blur'); $scope.spinner.stop();
           $scope.myData = res;
 
         }).error(function (data, status, headers, config) {
             toastr.error('Failed to retrieve service requests!');
             console.error(data);
-            $scope.spinner.stop();
+            $scope.toggleClass($scope.blurMe, 'blur'); $scope.spinner.stop();
         });
 
     };
 
     $scope.sendMail = function(){
-      $scope.spinIt('srContent');
+      $scope.spinIt('spinMe'); 
       $scope.rememberMe();
       $scope.formData.content = $scope.editorContent.getHTML();
       $scope.formData.signature = $scope.editorSignature.getHTML();
@@ -187,14 +191,14 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
       }).success(function (data, status, headers, config) {
           var res = JSON.parse(data);
           toastr.success(res);
-          $scope.spinner.stop();
+          $scope.toggleClass($scope.blurMe, 'blur'); $scope.spinner.stop();
           $scope.editorContent.setHTML('');
           $scope.gridOptions.$gridScope.toggleSelectAll(false);
         }).error(function (data, status, headers, config) {
             // $("#userid").notify(data.message, { className: 'error', elementPosition:"botom left" });
             toastr.error(headers);
             console.error(data); 
-            $scope.spinner.stop();  
+            $scope.toggleClass($scope.blurMe, 'blur'); $scope.spinner.stop();  
         });
 
     };

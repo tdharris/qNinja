@@ -65,7 +65,21 @@ p {
     height: 27px !important;
     line-height: 37px !important;
 }
-.tabbable { height: 100%;}
+.toolbar-container {
+  box-sizing: border-box;
+  padding: 8px 8px 7px 8px;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+#content, #signature {
+    height:195px;
+}
+.blur {
+    filter: url(#svgBlur); 
+    opacity: .4;
+    background: -moz-element(#content);
+    background-repeat: no-repeat;
+}
 .quill-wrapper {
   background-color: #fff;
   border-left: 1px solid #ccc;
@@ -73,12 +87,6 @@ p {
   box-shadow: 0px 0px 10px #ccc;
   margin-left: auto;
   margin-right: auto;
-}
-.toolbar-container {
-  box-sizing: border-box;
-  padding: 8px 8px 7px 8px;
-  border-bottom: 1px solid #ccc;
-  border-top: 1px solid #ccc;
 }
 .message {
     resize: none;
