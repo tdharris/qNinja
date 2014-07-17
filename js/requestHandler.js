@@ -1,7 +1,7 @@
 var async = require('async'),
     logme = require('logme'),
     processEmail = require('./processEmail'),
-    report = require('./report'),
+    Report = require('./report'),
     api = require('express-api-helper'),
     transport = require('./transport');
 
@@ -23,22 +23,28 @@ module.exports = function(req, res, next) {
     var taskHandler = {
         process: function(done) {
 
-            transport.init(task.engineer, task.password);
-            report.init(task.engineer, transport.get('notify'));
-            
+            var novellTransport = transport.novell(task.engineer, task.password),
+                report = new Report(task.engineer, transport.notify());
+
             // Append what is needed for each mail item to process
-            task.emails.forEach(function(mail){
+            var emails = task.emails.map(function(mail){
+                mail.report = report;
                 mail.fromUser = task.fromUser;
                 mail.ccSupport = task.ccSupport;
                 mail.content = task.content;
                 mail.signature = task.signature;
-                mail.transport = transport.get('novell');
+                mail.transport = novellTransport;
             });
 
             async.eachLimit(
                 task.emails, 3, 
-                processEmail, 
-                report.sendReport
+                processEmail,
+                function() {
+                    // Close the smtp connection pool
+                    novellTransport.close();
+                    report.send(done);
+                    // report.sendReport(notifyTransport, done);
+                }
             );
 
         }

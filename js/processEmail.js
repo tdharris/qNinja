@@ -1,5 +1,4 @@
-var validate = require('./validate'),
-    getRecipients = require('./getRecipients'),
+var getRecipients = require('./getRecipients'),
     createEmail = require('./createEmail'),
     sendMail = require('./sendMail'),
     report = require('./report');
@@ -9,7 +8,7 @@ var validate = require('./validate'),
 module.exports = function processEmail(mail, done) {
 
     // console.log('\nProcessing: ', mail, '\n');
-
+    
     // get validated list of recipients
     var recipients = getRecipients([mail.primaryContact, mail.alternateContact]);
     // console.log('\nValidated recipients: ', recipients);
@@ -20,7 +19,8 @@ module.exports = function processEmail(mail, done) {
     // console.log('mailOptions for transport: ', mail.mailOptions);
     sendMail(mail, function (err, result) {
 
-       report.saveToReport(result);
+       // report.saveToReport(result);
+       mail.report.results.push(result);
        done();
 
     });

@@ -1,10 +1,7 @@
-var nodemailer = require('nodemailer');
- 
-var transports = {};
-    
-exports.init = function (engineer, password) {
+var nodemailer = require('nodemailer'); 
 
-    transports.novell = nodemailer.createTransport("SMTP", {
+exports.novell = function(engineer, password) {
+    return nodemailer.createTransport("SMTP", {
         host: "xgate.provo.novell.com",
         secureConnection: false,
         tls: {
@@ -16,11 +13,8 @@ exports.init = function (engineer, password) {
             pass: password
         }
     });
-
-    transports.notify = nodemailer.createTransport("Direct");
- 
 }
 
-exports.get = function(name) {
-    return transports[name];
+exports.notify = function() {
+    return nodemailer.createTransport("Direct");
 }
