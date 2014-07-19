@@ -15,8 +15,6 @@ app.post('/sendMail', function(req, res){
   requestHandler(req, res);
 });
 
-console.log('qNinja service is up.');
-
 // Where to put utility?
 String.prototype.isEmpty = function() {
    return (this.length === 0 || !this.trim());
