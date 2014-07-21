@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>qNinja</title>
-    <link rel="shortcut icon" href="img/ninja.png">
+    <link rel="shortcut icon" href="img/qninja.jpg">
 
     <!-- Bootstrap -->
     <link href="lib/bootstrap-3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -56,7 +56,6 @@
               <h3 class="panel-title">
                 <i class="glyphicon glyphicon-user space-right"></i>
                 Novell Login
-                <i ng-click="getServiceRequests()" class="glyphicon glyphicon-refresh pull-right pointer"></i>
               </h3>
             </div>
 
@@ -64,11 +63,17 @@
               <form ng-submit="getServiceRequests()">
 
                 <div class="form-group">
-                   <label for="userid">User ID</label><input ng-model="formData.engineer" class="form-control" id="userid" required />
+                  <div class="input-group add-on">
+                    <input ng-model="formData.engineer" placeholder="User ID" type="text" class="form-control" id="userid" required />
+                    <div class="input-group-btn">
+                      <button class="btn btn-default" type="submit">
+                      <i class="glyphicon glyphicon-refresh"></i></button>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="form-group">
-                   <label for="password">Password</label><input ng-model="formData.password" type="password" class="form-control" id="password" />
+                   <input ng-model="formData.password" placeholder="Password" type="password" class="form-control" id="password" />
                 </div>
 
                 <div class="form-group">
