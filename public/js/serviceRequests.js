@@ -121,6 +121,8 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
 
       // $scope.formData.content = $scope.editorContent.getHTML();
       // $scope.formData.signature = $scope.editorSignature.getHTML();
+      // .replace(/<p(?:\s[^>]*)?>/ig,'').replace(/[^>;]<\/p>/ig, '<br>')
+      // .replace(/<p(?:\s[^>]*)?>/ig,'').replace(/<\/p>/ig, '<br>')
       $scope.items = $scope.editorContent.getHTML() + $scope.editorSignature.getHTML();
 
       $scope.modalInstance = $modal.open({
