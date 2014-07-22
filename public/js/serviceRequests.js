@@ -157,31 +157,20 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
     // angular-ui bootstrap modal
     $scope.open = function (size) {
 
-      // $scope.formData.content = $scope.editorContent.getHTML();
-      // $scope.formData.signature = $scope.editorSignature.getHTML();
-      // .replace(/<p(?:\s[^>]*)?>/ig,'').replace(/[^>;]<\/p>/ig, '<br>')
-      // .replace(/<p(?:\s[^>]*)?>/ig,'').replace(/<\/p>/ig, '<br>')
-      $scope.items = $scope.editorContent.getHTML() + $scope.editorSignature.getHTML();
-
+      preview = "<div class=\"modal-header\"><button type=\"button\" class=\"close\" ng-click=\"no()\">×</button><h4 class=\"modal-title ng-binding\"><span class=\"glyphicon glyphicon-check\"></span> Please Confirm</h4></div><div class=\"modal-body\">"+ $scope.editorContent.getHTML() + $scope.editorSignature.getHTML() +"</div><div class=\"modal-footer\"><button class=\"btn btn-primary\" ng-click=\"ok()\">OK</button><button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button></div>";
+  
       $scope.modalInstance = $modal.open({
-        templateUrl: 'myModalContent.html',
-        controller: $scope.ModalInstanceCtrl,
-        size: size,
-        resolve: {
-          items: function () {
-            return $scope.items;
-          }
-        }
+        template: preview,
+        controller: $scope.ModalInstanceCtrl
       });
 
     };
 
-    $scope.ModalInstanceCtrl = function ($scope, $modalInstance, items) {
-
-      $scope.items = items;
+    $scope.ModalInstanceCtrl = function ($scope, $modalInstance) {
 
       $scope.ok = function () {
         $modalInstance.close();
+        // $scope.getServiceRequests();
       };
 
       $scope.cancel = function () {

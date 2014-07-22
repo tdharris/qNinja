@@ -122,19 +122,6 @@
                   
             </div>
           </div>
-  <!-- <script type="text/ng-template" id="myModalContent.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Im a modal!</h3>
-    </div>
-    <div class="modal-body">
-      {{ items }}
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">OK</button>
-        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-    </div>
-  </script>
-  <button class="btn btn-default" ng-click="open('lg')">Large modal</button> -->
 
           <div id="messageContent" class="col-md-9 column">
             <div class="panel panel-asbestos">
@@ -205,10 +192,6 @@
                       </div>
                     </div>
 
-                   <!--  <div ng-click="updatePreview()" class="tab-pane" id="panel-3">
-                      <div class="quill-wrapper" ng-model="preview"></div>
-                    </div> -->
-
                   </div>
                 </div>
 
@@ -218,6 +201,7 @@
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                       Template <span class="caret"></span>
                     </button>
+                    <button class="btn btn-default" ng-click="open('lg')" style="margin-left:20px">Preview</button>
                     <ul class="dropdown-menu" role="menu">
                       <li ng-repeat="template in templates | orderBy:'id':true"><a ng-click="handleTemplate(template)">{{template.name}}</a></li>
                     </ul>

@@ -24,6 +24,7 @@ h1 {
 h3 {
     font-weight: normal;
 }
+
 /*.ngViewport { max-height: 600px; height: auto !important; min-height: 200px !important; }*/
 
 /*.ngCanvas, .ngViewport, .ngRow, .ngFooterPanel, .ngTopPanel { width: 100% !important; }*/
@@ -139,6 +140,18 @@ p {
     /*background-color: rgb(255, 255, 255);*/
     /*transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;*/
 }
+
+.modal-header { 
+    color: #fff; 
+    background-color: #333333;
+}
+.modal-body p {
+    font-family: 'Cardo', Georgia, Times, serif;
+    font-style: normal;
+    font-size: 14px;
+    /*line-height: 18px;*/
+}
+
 .checkbox {
     margin-top: 10px !important;
 }
