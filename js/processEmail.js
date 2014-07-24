@@ -10,7 +10,7 @@ module.exports = function processEmail(mail, done) {
     // console.log('\nProcessing: ', mail, '\n');
     
     // get validated list of recipients
-    var recipients = getRecipients([mail.primaryContact, mail.alternateContact]);
+    var recipients = getRecipients([mail.PRIMARYEMAIL, mail.ALTERNATECONTACT]);
     // console.log('\nValidated recipients: ', recipients);
 
     // console.log('\nCreating mail item:');
@@ -21,7 +21,9 @@ module.exports = function processEmail(mail, done) {
 
        // report.saveToReport(result);
        mail.report.results.push(result);
+       mail.report.content = mail.mailOptions.html;
        done();
 
     });
+
 };

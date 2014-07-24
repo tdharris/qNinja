@@ -12,14 +12,14 @@ module.exports = function sendMail(mail, callback) {
     mail.transport.sendMail(mail.mailOptions, function(error, response){
 
         var message,
-            mailInfo = '<b>To: </b>' + mail.mailOptions.to + ' <b>From: </b>' + mail.mailOptions.from + ' <b>Subject: </b>' + mail.mailOptions.subject;
+            mailInfo = '<b>To: </b>' + mail.mailOptions.to + ' <b>Cc: </b>' + mail.mailOptions.cc +' <b>From: </b>' + mail.mailOptions.from + ' <b>Subject: </b>' + mail.mailOptions.subject;
             
         if(error){
             message = 'Failed to send: <b style="color: red">' + error + '</b> | ' + mailInfo;
-            logme.error('Failed to send: ', error + ' | To:' + mail.mailOptions.to + ' From:' + mail.mailOptions.from + ' Subject:' + mail.mailOptions.subject);
+            logme.error('Failed to send: ', error + ' | To:' + mail.mailOptions.to + ' Cc:' + mail.mailOptions.cc + ' From:' + mail.mailOptions.from + ' Subject:' + mail.mailOptions.subject);
         }else{
             message = 'Sent: <b style="color: green">' + response.message + ' ✔</b> | ' + mailInfo;
-            logme.info('Sent: ' + response.message + ' | To:' + mail.mailOptions.to + ' From:' + mail.mailOptions.from + ' Subject:' + mail.mailOptions.subject);
+            logme.info('Sent: ' + response.message + ' | To:' + mail.mailOptions.to + ' Cc:' + mail.mailOptions.cc + ' From:' + mail.mailOptions.from + ' Subject:' + mail.mailOptions.subject);
         }
 
         callback(null, message);

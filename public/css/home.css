@@ -218,6 +218,7 @@ tbody tr {
 }
 .panel-midnightblue {
     border-color: #2c3e50;
+    min-height: 175px;
 }
 .lightblue {
     -moz-box-shadow: inset 0px 1px 0px 0px #bbdaf7;
@@ -232,3 +233,14 @@ tbody tr {
     text-decoration: none;
     text-shadow: 1px 1px 0px #528ecc;
 }
+.ngRow.selected {
+    color: #fff;
+    background-color: #8AB8E6;
+}
+/*.ngCellText{
+    white-space:normal !important;
+    }
+
+.ngVerticalBarVisible{
+      height: 100% !important;
+    }*/

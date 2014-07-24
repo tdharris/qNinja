@@ -3,10 +3,20 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
 
   myApp.controller('SRCtrl', ['$scope', '$http', 'localStorageService', '$modal', function($scope,$http,localStorageService,$modal) {
     
+    $scope.selectedRows=[];
+    $scope.formData = {
+      "engineer": undefined,
+      "password": undefined,
+      "fromUser": true,
+      "ccSupport": 'support@novell.com',
+      "emails": $scope.selectedRows,
+      "content": undefined,
+      "signature": undefined
+    };
+
     $scope.init = function(){
       // Local Storage: rememberMe (Retrieve from store)
       if(localStorageService.isSupported){
-
         $scope.formData.engineer = localStorageService.get('engineer'),
         $scope.formData.password = localStorageService.get('password'),
         $scope.formData.fromUser = localStorageService.get('fromUser'),
@@ -77,17 +87,6 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
       theme: 'snow'
     });
 
-    $scope.selectedRows=[];
-    $scope.formData = {
-      "engineer": undefined,
-      "password": undefined,
-      "fromUser": true,
-      "ccSupport": 'support@novell.com',
-      "emails": $scope.selectedRows,
-      "content": undefined,
-      "signature": undefined
-    };
-
     $scope.setFromUser = function(boolean){
       $scope.formData.fromUser = boolean;
       // TO-DO: Working on a way to replace my dependency on home.js (uses jQuery)
@@ -131,9 +130,10 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
       }).spin(target);
 
     }
-
+    
     $scope.gridOptions = {
       data: 'myData',
+      checkboxHeaderTemplate: '<input class="ngSelectionHeader" type="checkbox" ng-model="allSelected" ng-change="toggleSelectAll(allSelected)"/>',
       plugins: [new ngGridFlexibleHeightPlugin()],
       selectedItems: $scope.selectedRows,
       enableRowSelection: true,
@@ -142,16 +142,17 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
       enableColumnReordering: true,
       showFilter:true,
       showColumnMenu: true,
-      columnDefs: [{field: 'createdOn', displayName: 'Created On', enableCellEdit: false, width:'**', cellClass: 'grid-align-center', groupable: false},
-                   {field: 'sr', displayName: 'SR', enableCellEdit: false, width:'**', groupable: false},
-                   {field: 'customerName', displayName: 'Name', enableCellEdit: false, width:'**', groupable: false},
-                   {field: 'primaryContact', displayName: 'Primary', enableCellEdit: true, width:'****', groupable: false},
-                   {field: 'alternateContact', displayName: 'Alternate', enableCellEdit: true, width:'****', groupable: false},
-                   {field: 'status', displayName: 'Status', enableCellEdit: false, width:'***', groupable: false},
-                   {field: 'brief', displayName: 'Brief Description', enableCellEdit: true, width:'******', groupable: false},
-                   {field: 'lastActivityDate', displayName: 'Last Activity Date', enableCellEdit: false, cellFilter: 'date:\'mediumDate\'', width:'**', cellClass: 'grid-align-center', groupable: false},
-                   {field: 'lastActivity', displayName: 'Last Activity', enableCellEdit: false, width:'******', groupable: false}],
-      sortInfo: { fields: ['lastActivityDate'], directions: ['asc'] }
+      showFooter: true,
+      columnDefs: [{field: 'CREATEDON', displayName: 'Created On', enableCellEdit: false, cellFilter: 'date:\'mediumDate\'', width:'**', cellClass: 'grid-align-center'},
+                   {field: 'SR', displayName: 'SR', enableCellEdit: false, width:'**'},
+                   {field: 'CUSTOMERNAME', displayName: 'Name', enableCellEdit: false, width:'***'},
+                   {field: 'PRIMARYEMAIL', displayName: 'Primary', enableCellEdit: true, width:'****'},
+                   {field: 'ALTERNATECONTACT', displayName: 'Alternate', enableCellEdit: true, width:'****'},
+                   {field: 'STATUS', displayName: 'Status', enableCellEdit: false, width:'***'},
+                   {field: 'BRIEF', displayName: 'Brief Description', enableCellEdit: true, width:'********'},
+                   {field: 'LASTACTIVITYDATE', displayName: 'Date', enableCellEdit: false, cellFilter: 'date:\'mediumDate\'', width:'**', cellClass: 'grid-align-center'},
+                   {field: 'LASTACTIVITY', displayName: 'Last Activity', enableCellEdit: true, width:'**********'}],
+      sortInfo: { fields: ['LASTACTIVITYDATE'], directions: ['asc'] }
     };
 
     // angular-ui bootstrap modal
@@ -190,13 +191,15 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
         headers: {'Content-Type': 'application/json'},
         timeout: 2000
       }).success(function (data, status, headers, config) {
-          var res = JSON.parse(JSON.parse(data));
-          res.forEach(function(item){ 
-            item.lastActivityDate = new Date(Date.parse(item.lastActivityDate)); 
+          var body = data;
+          body.forEach(function(item){ 
+            item.CREATEDON = new Date(Date.parse(item.CREATEDON)); 
+            item.LASTACTIVITYDATE = new Date(Date.parse(item.LASTACTIVITYDATE)); 
           });
+          $scope.myData = body;
           toastr.success('Received Service Requests.');
           $scope.toggleClass($scope.blurMe, 'blur'); $scope.spinner.stop();
-          $scope.myData = res;
+          
 
         }).error(function (data, status, headers, config) {
             toastr.error('Failed to retrieve service requests!');
@@ -211,20 +214,19 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
       $scope.rememberMe();
       $scope.formData.content = $scope.editorContent.getHTML();
       $scope.formData.signature = $scope.editorSignature.getHTML();
-      
+
       $http({
         url: 'sendMail',
         method: "POST",
         data: JSON.stringify($scope.formData),
         headers: {'Content-Type': 'application/json'}
       }).success(function (data, status, headers, config) {
-          var res = JSON.parse(data);
-          toastr.success(res);
+          var res = JSON.stringify(data);
+          toastr.success(JSON.parse(res));
           $scope.toggleClass($scope.blurMe, 'blur'); $scope.spinner.stop();
           $scope.editorContent.setHTML('');
           $scope.gridOptions.$gridScope.toggleSelectAll(false);
         }).error(function (data, status, headers, config) {
-            // $("#userid").notify(data.message, { className: 'error', elementPosition:"botom left" });
             toastr.error(headers);
             console.error(data); 
             $scope.toggleClass($scope.blurMe, 'blur'); $scope.spinner.stop();  
