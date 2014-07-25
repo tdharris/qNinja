@@ -15,14 +15,18 @@ module.exports = function sendMail(mail, callback) {
             mailInfo = '<b>To: </b>' + mail.mailOptions.to + ' <b>Cc: </b>' + mail.mailOptions.cc +' <b>From: </b>' + mail.mailOptions.from + ' <b>Subject: </b>' + mail.mailOptions.subject;
             
         if(error){
+            mail.mailOptions.err = true;
+            mail.mailOptions.res = error;
             message = 'Failed to send: <b style="color: red">' + error + '</b> | ' + mailInfo;
             logme.error('Failed to send: ', error + ' | To:' + mail.mailOptions.to + ' Cc:' + mail.mailOptions.cc + ' From:' + mail.mailOptions.from + ' Subject:' + mail.mailOptions.subject);
         }else{
+            mail.mailOptions.err = false;
+            mail.mailOptions.res = response.message;
             message = 'Sent: <b style="color: green">' + response.message + ' ✔</b> | ' + mailInfo;
             logme.info('Sent: ' + response.message + ' | To:' + mail.mailOptions.to + ' Cc:' + mail.mailOptions.cc + ' From:' + mail.mailOptions.from + ' Subject:' + mail.mailOptions.subject);
         }
 
-        callback(null, message);
+        callback(null, mail.mailOptions);
 
     });
 

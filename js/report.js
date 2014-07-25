@@ -1,23 +1,32 @@
 var logme = require('logme'),
-    fs = require('fs');
+    swig  = require('swig'),
+    path = require('path');
 
 var Report = module.exports = function(engineer, transport) {
     this.engineer = engineer;
     this.transport = transport;
-    this.results = [];
+    this.responses = [];
     this.content = "";
+    // var file = ;
+    // console.log(typeof file, file);
+    // this.htmlReport = swig.compileFile(file);
 };
 
 Report.prototype = {
 
     send: function(done) {
         var self = this,
-            mailOptions = {
-                from: "qNinja <qNinja@mymobile.lab.novell.com>",
-                to: this.engineer + "@novell.com",
-                subject: "[qNinja] Email Report ✔",
-                html: ""
-            };
+            content = swig.renderFile(__dirname + "/../views/report.html", {
+                messages: self.responses,
+                content:  self.content
+            });
+
+        var mailOptions = {
+            from: "qNinja <qNinja@mymobile.lab.novell.com>",
+            to: this.engineer + "@novell.com",
+            subject: "[qNinja] Email Report ✔",
+            html: content
+        };
 
         this.transport.sendMail(mailOptions, function(error, response){
             // close the transport first

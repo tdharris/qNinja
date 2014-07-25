@@ -44,10 +44,16 @@
             .email {
                 font-size: 12px;
             }
-            .container-fluid { 
-            	background-color: #FFF; 
-            	width: 90%;
+            .container {
+            	background-color: #FFF;
+				padding-right: 25px;
+				padding-left: 25px;
+				-webkit-border-radius: 10px;
+				-moz-border-radius: 10px;
+				border-radius: 10px;
+				margin-top: 30px;
             }
+            .label { line-height: 2; }
             body { background-color: #F5F5F5; }
 
     </style>
@@ -55,7 +61,7 @@
 <body>
 
     <div class="container-fluid">
-        <div class="container-fluid">
+        <div class="container">
 
             <div class="row">
 
@@ -75,27 +81,23 @@
                       </tr>
                   </thead>   
                   <tbody>
-                    <tr>
-                        <td><span class="label label-success">250 Ok ✔</span></td> 
-                        <td>mlitt@sounddepo.com</td>
-                        <td>support@novell.com</td>                                   
-                        <td>tharris@novell.com</td>                                   
-                        <td>SR 10903189931 - issues with user names synching properly and user accounts +EO </td>                                   
-                    </tr>
-                    <tr>
-                        <td><span class="label label-danger">250 Ok ✔</span></td> 
-                        <td>mlitt@sounddepo.com</td>
-                        <td>support@novell.com</td>                                   
-                        <td>tharris@novell.com</td>                                   
-                        <td>SR 10903189931 - issues with user names synching properly and user accounts +EO </td>                                   
-                    </tr>                             
+					{% for message in messages %}
+						<tr{% if loop.first %} class="first"{% endif %}>
+							{% if !message.err %}<td><span class="label label-success">{{ message.res }}</span></td>{% endif %}
+							{% if message.err %}<td><span class="label label-danger">{{ message.res }}</span></td>{% endif %}
+							<td>{{ message.to }}</td>
+							<td>{{ message.cc }}</td>
+							<td>{{ message.from }}</td>
+							<td>{{ message.subject }}</td>
+						</tr>
+					{% endfor %}                          
                   </tbody>
                 </table>
                 
-                <div class="panel panel-default">
+                <div class="panel panel-info">
                   <div class="panel-heading">Message Content</div>
                   <div class="panel-body email">
-                    CONTENT
+                    {{ content|safe }}
                   </div>
                 </div>
 

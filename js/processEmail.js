@@ -17,10 +17,10 @@ module.exports = function processEmail(mail, done) {
     mail.mailOptions = createEmail(mail, recipients);
     
     // console.log('mailOptions for transport: ', mail.mailOptions);
-    sendMail(mail, function (err, result) {
+    sendMail(mail, function (err, response) {
 
        // report.saveToReport(result);
-       mail.report.results.push(result);
+       mail.report.responses.push(response);
        mail.report.content = mail.mailOptions.html;
        done();
 
