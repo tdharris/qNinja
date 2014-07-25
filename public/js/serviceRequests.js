@@ -35,42 +35,58 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
       $scope.blurMe = document.getElementById('blurMe');
     }
 
-    // Templates
+    // Templates: update view, create handle
     $scope.templates = [
-      {
-        'id': 1,
-        'name': 'New SR',
-        'snippet': "Name,\n\nI've taken ownership of this Service Request and will be your contact for this SR. We have great resources here at Novell to assist us in identifying the problem and finding an acceptable solution. Technology is great when it works, and can be frustrating when software misbehaves. I want you to know that I will do everything I can to resolve this issue you are experiencing with our product.\n\n\nFeel free to contact me."
-      },
-      {
-        'id': 2,
-        'name': 'Bomgar Invitation',
-        'snippet': "\nAre you available for a Bomgar session? \nThe session key below is valid below for the next 4 hours. You can connect by either of the following: \nURL\nOr http://www.websupport.com and enter NUMBER as the session key."
-      },
-      {
-        'id': 3,
-        'name': 'EMEA',
-        'snippet': "\nI see our timezones are very different. Are you available to work this issue now? I will keep this Service Request until the end of my shift. If I do not receive an email back from you, I'll go ahead and put this Service Request in the queue for the team in your timezone."
-      },
-      {
-        'id': 4,
-        'name': 'Schedule to Close',
-        'snippet': "\nJust checking in to verify the issue has been resolved. I'll be placing this SR in a Schedule to Close state. If I don't hear back from you, I'll go ahead and close the SR. Feel free to contact me."
-      },
-      {
-        'id': 5,
-        'name': 'Close',
-        'snippet': "\nI'll be closing this Service Request. If the issue returns, feel free to contact me within 14 days and I will reopen the SR."
-      },
-      {
-        'id': 6,
-        'name': 'Support Config',
-        'snippet': "\nLet's start by getting a support config. Most SLES Servers have the following tool by default.\n\nPlease execute the following command on the eDirectory server:\nsupportconfig -ur <SR#>\n\nThis will automatically upload the servers configuration information and attach it to the SR."
-      }
-    ];
+            {
+              'id': 0,
+              'name': '*New SR',
+              'snippet': ''
+            },
+            {
+              'id': 1,
+              'name': 'Bomgar Invitation',
+              'snippet': ''
+            },
+            {
+              'id': 2,
+              'name': 'EMEA',
+              'snippet': ''
+            },
+            {
+              'id': 3,
+              'name': 'Schedule to Close',
+              'snippet': ''
+            },
+            {
+              'id': 4,
+              'name': 'Close',
+              'snippet': ''
+            },
+            {
+              'id': 5,
+              'name': 'Support Config',
+              'snippet': ''
+            }
+          ];
+
+    $scope.renderTemplates = function(template, selectedRow) {
+
+      if(template.id == 0) template.snippet = selectedRow.CUSTOMERNAME + ",\n\nWith regards to Service Request # "+selectedRow.SR+" ("+selectedRow.BRIEF+"):\n\n< INSERT MESSAGE >\n\nThank you,"
+      else if(template.id == 1) template.snippet = "\nAre you available for a Bomgar session? \nThe session key below is valid below for the next 4 hours. You can connect by either of the following: \nURL\nOr http://www.websupport.com and enter NUMBER as the session key."
+      else if(template.id == 2) template.snippet = "\nI see our timezones are very different. Are you available to work this issue now? I will keep this Service Request until the end of my shift. If I do not receive an email back from you, I'll go ahead and put this Service Request in the queue for the team in your timezone."
+      else if(template.id == 3) template.snippet = "\nJust checking in to verify the issue has been resolved. I'll be placing this SR in a Schedule to Close state. If I don't hear back from you, I'll go ahead and close the SR. Feel free to contact me."
+      else if(template.id == 4) template.snippet = "\nI'll be closing this Service Request. If the issue returns, feel free to contact me within 14 days and I will reopen the SR."
+      else if(template.id == 5) template.snippet = "\nLet's start by getting a support config. Most SLES Servers have the following tool by default.\n\nPlease execute the following command on the eDirectory server:\nsupportconfig -ur <SR#>\n\nThis will automatically upload the servers configuration information and attach it to the SR."
+
+    }
 
     $scope.handleTemplate = function(template) {
-      $scope.editorContent.insertText($scope.editorContent.getLength(), template.snippet + '\n');
+      // Pass in first selected SR item for template variables
+      if(template.id == 0 && $scope.selectedRows.length == 0 || template.id == 0 && $scope.selectedRows.length > 1) toastr.error('Please only select one SR when using this template');
+      else { 
+        $scope.renderTemplates(template, $scope.selectedRows[0]);
+        $scope.editorContent.insertText($scope.editorContent.getLength(), template.snippet + '\n');
+      }
     };
 
     // Initialize editor with custom theme and modules
