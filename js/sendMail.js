@@ -16,7 +16,8 @@ module.exports = function sendMail(mail, callback) {
             
         if(error){
             mail.mailOptions.err = true;
-            mail.mailOptions.res = error;
+            mail.mailOptions.res = error.name;
+            console.log(error.name);
             message = 'Failed to send: <b style="color: red">' + error + '</b> | ' + mailInfo;
             logme.error('Failed to send: ', error + ' | To:' + mail.mailOptions.to + ' Cc:' + mail.mailOptions.cc + ' From:' + mail.mailOptions.from + ' Subject:' + mail.mailOptions.subject);
         }else{
