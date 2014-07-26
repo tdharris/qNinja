@@ -17,10 +17,10 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
     $scope.init = function(){
       // Local Storage: rememberMe (Retrieve from store)
       if(localStorageService.isSupported){
-        $scope.formData.engineer = localStorageService.get('engineer'),
-        $scope.formData.password = localStorageService.get('password'),
-        $scope.formData.fromUser = localStorageService.get('fromUser'),
-        $scope.formData.signature = localStorageService.get('signature');
+        $scope.formData.engineer = localStorageService.get("engineer"),
+        $scope.formData.password = localStorageService.get("password"),
+        $scope.formData.fromUser = localStorageService.get("fromUser"),
+        $scope.formData.signature = localStorageService.get("signature");
 
         if($scope.formData.engineer || $scope.formData.password || $scope.formData.fromUser || $scope.formData.signature) {
           document.getElementById('rememberMe').checked = true;
@@ -33,7 +33,7 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
       }
 
       $scope.blurMe = document.getElementById('blurMe');
-    }
+    };
 
     // Templates: update view, create handle
     $scope.templates = {
@@ -132,9 +132,9 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
     $scope.compileSnippet = function(template, selectedRow) {
 
       // Render variable-dependant snippet(s)
-      $scope.templates.general[0].snippet = selectedRow.CUSTOMERNAME + ",\n\nWith regards to Service Request # "+selectedRow.SR+" ("+selectedRow.BRIEF+"):\n\n< INSERT MESSAGE >\n\nThank you,"
+      $scope.templates.general[0].snippet = selectedRow.CUSTOMERNAME + ",\n\nWith regards to Service Request # "+selectedRow.SR+" ("+selectedRow.BRIEF+"):\n\n< INSERT MESSAGE >\n\nThank you,";
       
-    }
+    };
 
     $scope.handleTemplate = function(template) {
 
@@ -170,7 +170,7 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
       // $scope.toggleClass(element, 'active');
       // $scope.toggleClass(element, 'btn-primary');
       // $scope.toggleClass(element, 'btn-default');
-    }
+    };
 
     $scope.toggleClass = function(element, className){
       if (!element || !className){
@@ -187,7 +187,7 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
           classString = classString.substr(0, nameIndex) + classString.substr(nameIndex+className.length);
       }
       element.className = classString;
-    }
+    };
 
     $scope.spinIt = function(element){
 
@@ -206,7 +206,7 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
         direction: 1
       }).spin(target);
 
-    }
+    };
     
     $scope.gridOptions = {
       data: 'myData',
@@ -325,6 +325,6 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
         }
       }
       
-    }
+    };
 
   }]);

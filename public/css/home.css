@@ -2,10 +2,10 @@
     margin-top: 15px;
 }
 @font-face {
-    font-family: 'Allan';
-    font-style: normal;
-    font-weight: 700;
-    src: local('Allan Bold'), local('Allan-Bold'), url('fonts/Allan.ttf') format('truetype');
+  font-family: 'Allan';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Allan Bold'), local('Allan-Bold'), url(https://fonts.gstatic.com/s/allan/v6/XrS3DTpK5zGDCQZc8I2ynnYhjbSpvc47ee6xR_80Hnw.woff2) format('woff2'), url(https://fonts.gstatic.com/s/allan/v6/HDuJMALbbJ3Ny_JtXeABSXYhjbSpvc47ee6xR_80Hnw.woff) format('woff');
 }
 h1 {
     font-family: 'Allan', Helvetica, Arial, sans-serif;

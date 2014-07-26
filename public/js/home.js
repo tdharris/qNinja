@@ -25,8 +25,7 @@ $( document ).ready(function() {
 	    var doPrevent = false;
 	    if (event.keyCode === 8) {
 	        var d = event.srcElement || event.target;
-	        if ((d.tagName.toUpperCase() === 'INPUT' && (d.type.toUpperCase() === 'TEXT' || d.type.toUpperCase() === 'PASSWORD' || d.type.toUpperCase() === 'FILE' || d.type.toUpperCase() === 'EMAIL' )) 
-	             || d.tagName.toUpperCase() === 'TEXTAREA') {
+	        if ((d.tagName.toUpperCase() === 'INPUT' && (d.type.toUpperCase() === 'TEXT' || d.type.toUpperCase() === 'PASSWORD' || d.type.toUpperCase() === 'FILE' || d.type.toUpperCase() === 'EMAIL' )) || d.tagName.toUpperCase() === 'TEXTAREA') {
 	            doPrevent = d.readOnly || d.disabled;
 	        }
 	        else {
@@ -38,5 +37,5 @@ $( document ).ready(function() {
 	        event.preventDefault();
 	    }
 	});
-	
+
 });
