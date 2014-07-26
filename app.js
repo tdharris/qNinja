@@ -2,9 +2,11 @@ var express = require('express'),
     app = module.exports = express(),
     bodyParser = require('body-parser'),
     getServiceRequests = require('./js/getServiceRequests'),
-    requestHandler = require('./js/requestHandler');
+    requestHandler = require('./js/requestHandler'),
+    compress = require('compression')();
 
-app.use(express.static(__dirname+'/public'))
+app.use(compress)
+   .use(express.static(__dirname+'/public'))
    .use(bodyParser.json());
 
 app.post('/getServiceRequests', function(req, res){
