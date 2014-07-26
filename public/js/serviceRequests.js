@@ -36,57 +36,118 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
     }
 
     // Templates: update view, create handle
-    $scope.templates = [
-            {
-              'id': 0,
-              'name': '*New SR',
-              'snippet': ''
-            },
-            {
-              'id': 1,
-              'name': 'Bomgar Invitation',
-              'snippet': ''
-            },
-            {
-              'id': 2,
-              'name': 'EMEA',
-              'snippet': ''
-            },
-            {
-              'id': 3,
-              'name': 'Schedule to Close',
-              'snippet': ''
-            },
-            {
-              'id': 4,
-              'name': 'Close',
-              'snippet': ''
-            },
-            {
-              'id': 5,
-              'name': 'Support Config',
-              'snippet': ''
-            }
-          ];
+    $scope.templates = {
 
-    $scope.renderTemplates = function(template, selectedRow) {
+      general: [
+          {
+            name: '*New SR',
+            selectMultiple: false,
+            snippet: ''
+          },
+          {
+            name: 'Bomgar Invitation',
+            selectMultiple: true,
+            snippet: "\nAre you available for a Bomgar session? \nThe session key below is valid below for the next 4 hours. You can connect by either of the following: \nURL\nOr http://www.websupport.com and enter NUMBER as the session key."
+          },
+          {
+            name: 'EMEA',
+            selectMultiple: true,
+            snippet: "\nI see our timezones are very different. Are you available to work this issue now? I will keep this Service Request until the end of my shift. If I do not receive an email back from you, I'll go ahead and put this Service Request in the queue for the team in your timezone."
+          },
+          {
+            name: 'Schedule to Close',
+            selectMultiple: true,
+            snippet: "\nJust checking in to verify the issue has been resolved. I'll be placing this SR in a Schedule to Close state. If I don't hear back from you, I'll go ahead and close the SR. Feel free to contact me."
+          },
+          {
+            name: 'Close',
+            selectMultiple: true,
+            snippet: "\nI'll be closing this Service Request. If the issue returns, feel free to contact me within 14 days and I will reopen the SR."
+          },
+          {
+            name: 'Support Config',
+            selectMultiple: true,
+            snippet: "\nLet's start by getting a support config. Most SLES Servers have the following tool by default.\n\nPlease execute the following command on the eDirectory server:\nsupportconfig -ur <SR#>\n\nThis will automatically upload the servers configuration information and attach it to the SR."
+          }
+        ],
+        special: [
+          {
+            name: 'GroupWise',
+            selectMultiple: true,
+            submenu: true,
+            snippet: '',
+            items: [
+              {
+                name: 'POA Logs',
+                selectMultiple: true,
+                snippet: "\nPlease provide verbose POA logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_poa_mon_log_files.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/a7u9jel.html\n"
+              },
+              {
+                name: 'GWIA Logs',
+                selectMultiple: true,
+                snippet: "\nPlease provide verbose GWIA logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_gwia_mon_log.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/ak8u8jp.html\n"
+              },
+              {
+                name: 'WebAccess Logs',
+                selectMultiple: true,
+                snippet: "\nPlease provide verbose WebAccess logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_webacc_mon_logs.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/bw83bv6.html\n"
+              },
+              {
+                name: 'MTA Logs',
+                selectMultiple: true,
+                snippet: "\nPlease provide verbose MTA logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_mta_mon_log_files.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/a7xzvus.html\n"
+              },
+              {
+                name: 'DVA Logs',
+                selectMultiple: true,
+                snippet: "\nPlease provide verbose DVA logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_dva_log.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/bujawkn.html\n"
+              }
+            ]
+          },
+          {
+            name: 'eDirectory',
+            selectMultiple: true,
+            submenu: false,
+            snippet: '',
+            items: []
+          },
+          {
+            name: 'GMS',
+            selectMultiple: true,
+            submenu: false,
+            snippet: '',
+            items: []
+          },
+          {
+            name: 'Filr',
+            selectMultiple: true,
+            submenu: false,
+            snippet: '',
+            items: []
+          }
+        ]
 
-      if(template.id == 0) template.snippet = selectedRow.CUSTOMERNAME + ",\n\nWith regards to Service Request # "+selectedRow.SR+" ("+selectedRow.BRIEF+"):\n\n< INSERT MESSAGE >\n\nThank you,"
-      else if(template.id == 1) template.snippet = "\nAre you available for a Bomgar session? \nThe session key below is valid below for the next 4 hours. You can connect by either of the following: \nURL\nOr http://www.websupport.com and enter NUMBER as the session key."
-      else if(template.id == 2) template.snippet = "\nI see our timezones are very different. Are you available to work this issue now? I will keep this Service Request until the end of my shift. If I do not receive an email back from you, I'll go ahead and put this Service Request in the queue for the team in your timezone."
-      else if(template.id == 3) template.snippet = "\nJust checking in to verify the issue has been resolved. I'll be placing this SR in a Schedule to Close state. If I don't hear back from you, I'll go ahead and close the SR. Feel free to contact me."
-      else if(template.id == 4) template.snippet = "\nI'll be closing this Service Request. If the issue returns, feel free to contact me within 14 days and I will reopen the SR."
-      else if(template.id == 5) template.snippet = "\nLet's start by getting a support config. Most SLES Servers have the following tool by default.\n\nPlease execute the following command on the eDirectory server:\nsupportconfig -ur <SR#>\n\nThis will automatically upload the servers configuration information and attach it to the SR."
+    };
 
+    $scope.compileSnippet = function(template, selectedRow) {
+
+      // Render variable-dependant snippet(s)
+      $scope.templates.general[0].snippet = selectedRow.CUSTOMERNAME + ",\n\nWith regards to Service Request # "+selectedRow.SR+" ("+selectedRow.BRIEF+"):\n\n< INSERT MESSAGE >\n\nThank you,"
+      
     }
 
     $scope.handleTemplate = function(template) {
-      // Pass in first selected SR item for template variables
-      if(template.id == 0 && $scope.selectedRows.length == 0 || template.id == 0 && $scope.selectedRows.length > 1) toastr.error('Please only select one SR when using this template');
-      else { 
-        $scope.renderTemplates(template, $scope.selectedRows[0]);
-        $scope.editorContent.insertText($scope.editorContent.getLength(), template.snippet + '\n');
-      }
+
+      // If template requires variables from selectedRow, and 1 row isn't selected
+      if(!template.selectMultiple && $scope.selectedRows.length != 1) 
+        toastr.error('Please only select one SR when using this template');
+      // Render variable-dependant snippets (depends on 1-row selected)
+      else if(!template.selectMultiple)
+        $scope.compileSnippet(template, $scope.selectedRows[0]);
+
+      // Finally, insert the snippet
+      $scope.editorContent.insertText($scope.editorContent.getLength(), template.snippet + '\n');
+
     };
 
     // Initialize editor with custom theme and modules

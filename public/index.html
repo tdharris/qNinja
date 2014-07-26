@@ -30,16 +30,6 @@
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap-3.1.1/js/bootstrap.min.js"></script>
 
-    <script type="text/javascript" src="lib/quill.js"></script>
-    <script type="text/javascript" src="lib/ng-grid/ng-grid-2.0.11.min.js"></script>
-    <script type="text/javascript" src="lib/notify-combined.min.js"></script>
-    <script type="text/javascript" src="lib/toastr.min.js"></script>
-    <script type="text/javascript" src="lib/angular-local-storage.js"></script>
-    <script type="text/javascript" src="lib/spin.min.js"></script>
-    <script type="text/javascript" src="lib/ng-grid-flexible-height.js"></script>
-    <script type="text/javascript" src="js/home.js"></script>
-    <script type="text/javascript" src="js/serviceRequests.js"></script>
-
   </head>
   <body ng-controller="SRCtrl" ng-init="init()">
     <div id="blurMe" class="container-fluid main">
@@ -196,15 +186,41 @@
 
                 <div class="col-md-12 column" style="margin-top: 20px;">
                   <!-- Single button -->
-                  <div class="btn-group dropup pull-left">
+                  <div class="btn-group pull-left">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                       Template <span class="caret"></span>
                     </button>
-                    <button class="btn btn-default" ng-click="open('lg')" style="margin-left:20px">Preview</button>
-                    <ul class="dropdown-menu" role="menu">
-                      <li ng-repeat="template in templates | orderBy:'id':true"><a ng-click="handleTemplate(template)">{{template.name}}</a></li>
+
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                      <li ng-repeat="template in templates.general"><a ng-click="handleTemplate(template)">{{template.name}}</a></li>
+                      <li class="divider"></li>
+                      <li class="dropdown-submenu">
+                        <a tabindex="-1" href="#">More..</a>
+                        <ul class="dropdown-menu">
+                          <li ng-repeat="template in templates.special" ng-class="{'dropdown-submenu': template.submenu}"><a ng-click="handleTemplate(template)">{{template.name}}</a>
+                            <ul ngIf="template.submenu" class="dropdown-menu">
+                              <li ng-repeat="item in template.items"><a ng-click="handleTemplate(item)">{{item.name}}</a></li>
+                            </ul>
+                          </li>
+                          <!-- <li class="dropdown-submenu">
+                            <a href="#">More..</a>
+                            <ul class="dropdown-menu">
+                              <li><a href="#">3rd level</a></li>
+                              <li><a href="#">3rd level</a></li>
+                            </ul>
+                          </li> -->
+                        </ul>
+                      </li>
                     </ul>
+                    <!-- <ul class="dropdown-menu" role="menu">
+                      <li>
+                        <li ng-repeat="template in templates.special | orderBy:'id':true"><a ng-click="handleTemplate(template)">{{template.name}}</a></li>
+                        <hr>
+                        
+                      </li>
+                    </ul> -->
                   </div>
+                  <button class="btn btn-default" ng-click="open('lg')" style="margin-left:20px">Preview</button>
                   <button id="sendMail" ng-click="sendMail()" type="button" class="btn btn-success btn-default pull-right">Send</button>
                 </div>
 
@@ -235,5 +251,16 @@
       </div>
       
     </div>
+
+    <script type="text/javascript" src="lib/quill.js"></script>
+    <script type="text/javascript" src="lib/ng-grid/ng-grid-2.0.11.min.js"></script>
+    <script type="text/javascript" src="lib/notify-combined.min.js"></script>
+    <script type="text/javascript" src="lib/toastr.min.js"></script>
+    <script type="text/javascript" src="lib/angular-local-storage.js"></script>
+    <script type="text/javascript" src="lib/spin.min.js"></script>
+    <script type="text/javascript" src="lib/ng-grid-flexible-height.js"></script>
+    <script type="text/javascript" src="js/home.js"></script>
+    <script type="text/javascript" src="js/serviceRequests.js"></script>
+
   </body>
 </html>

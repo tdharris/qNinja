@@ -20,6 +20,23 @@ $( document ).ready(function() {
 	    $(this).find('.btn').toggleClass('btn-default');
     });
 
-    // getServiceRequests on enter keypress from userid field
+    // Prevent backspace from going back in browser
+	$(document).unbind('keydown').bind('keydown', function (event) {
+	    var doPrevent = false;
+	    if (event.keyCode === 8) {
+	        var d = event.srcElement || event.target;
+	        if ((d.tagName.toUpperCase() === 'INPUT' && (d.type.toUpperCase() === 'TEXT' || d.type.toUpperCase() === 'PASSWORD' || d.type.toUpperCase() === 'FILE' || d.type.toUpperCase() === 'EMAIL' )) 
+	             || d.tagName.toUpperCase() === 'TEXTAREA') {
+	            doPrevent = d.readOnly || d.disabled;
+	        }
+	        else {
+	            doPrevent = true;
+	        }
+	    }
 
+	    if (doPrevent) {
+	        event.preventDefault();
+	    }
+	});
+	
 });
