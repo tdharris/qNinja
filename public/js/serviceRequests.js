@@ -47,27 +47,32 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
           {
             name: 'Bomgar Invitation',
             selectMultiple: true,
-            snippet: "\nAre you available for a Bomgar session? \nThe session key below is valid below for the next 4 hours. You can connect by either of the following: \nURL\nOr http://www.websupport.com and enter NUMBER as the session key."
+            snippet: "Are you available for a Bomgar session? \nYou can connect by either of the following: \nURL\nOr http://www.websupport.com and enter NUMBER as the session key."
           },
           {
             name: 'EMEA',
             selectMultiple: true,
-            snippet: "\nI see our timezones are very different. Are you available to work this issue now? I will keep this Service Request until the end of my shift. If I do not receive an email back from you, I'll go ahead and put this Service Request in the queue for the team in your timezone."
+            snippet: "I see our timezones are very different. Are you available to work this issue now? I will keep this Service Request until the end of my shift. If I do not receive an email back from you, I'll go ahead and put this Service Request in the queue for the team in your timezone."
+          },
+          {
+            name: 'Follow-up',
+            selectMultiple: true,
+            snippet: "Just following up with you, as I haven't heard from you since my last email. What is the current status of this service request?"
           },
           {
             name: 'Schedule to Close',
             selectMultiple: true,
-            snippet: "\nJust checking in to verify the issue has been resolved. I'll be placing this SR in a Schedule to Close state. If I don't hear back from you, I'll go ahead and close the SR. Feel free to contact me."
+            snippet: "Just checking in to verify the issue has been resolved. I'll be placing this SR in a Schedule to Close state. If I don't hear back from you, I'll go ahead and close the SR. Feel free to contact me."
           },
           {
             name: 'Close',
             selectMultiple: true,
-            snippet: "\nI'll be closing this Service Request. If the issue returns, feel free to contact me within 14 days and I will reopen the SR."
+            snippet: "I'll be closing this Service Request. If the issue returns, feel free to contact me within 14 days and I will reopen the SR."
           },
           {
             name: 'Support Config',
             selectMultiple: true,
-            snippet: "\nLet's start by getting a support config. Most SLES Servers have the following tool by default.\n\nPlease execute the following command on the eDirectory server:\nsupportconfig -ur <SR#>\n\nThis will automatically upload the servers configuration information and attach it to the SR."
+            snippet: "Let's start by getting a support config. Most SLES Servers have the following tool by default.\n\nPlease execute the following command on the eDirectory server:\nsupportconfig -ur <SR#>\n\nThis will automatically upload the servers configuration information and attach it to the SR."
           }
         ],
         special: [
@@ -79,27 +84,27 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
               {
                 name: 'POA Logs',
                 selectMultiple: true,
-                snippet: "\nPlease provide verbose POA logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_poa_mon_log_files.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/a7u9jel.html\n"
+                snippet: "Please provide verbose POA logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_poa_mon_log_files.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/a7u9jel.html\n"
               },
               {
                 name: 'GWIA Logs',
                 selectMultiple: true,
-                snippet: "\nPlease provide verbose GWIA logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_gwia_mon_log.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/ak8u8jp.html\n"
+                snippet: "Please provide verbose GWIA logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_gwia_mon_log.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/ak8u8jp.html\n"
               },
               {
                 name: 'WebAccess Logs',
                 selectMultiple: true,
-                snippet: "\nPlease provide verbose WebAccess logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_webacc_mon_logs.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/bw83bv6.html\n"
+                snippet: "Please provide verbose WebAccess logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_webacc_mon_logs.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/bw83bv6.html\n"
               },
               {
                 name: 'MTA Logs',
                 selectMultiple: true,
-                snippet: "\nPlease provide verbose MTA logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_mta_mon_log_files.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/a7xzvus.html\n"
+                snippet: "Please provide verbose MTA logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_mta_mon_log_files.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/a7xzvus.html\n"
               },
               {
                 name: 'DVA Logs',
                 selectMultiple: true,
-                snippet: "\nPlease provide verbose DVA logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_dva_log.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/bujawkn.html\n"
+                snippet: "Please provide verbose DVA logs from the time of the incident:\nhttps://www.novell.com/documentation/groupwise2014/gw2014_guide_admin/data/adm_dva_log.html\nhttps://www.novell.com/documentation/groupwise2012/gw2012_guide_admin/data/bujawkn.html\n"
               }
             ]
           },
@@ -191,13 +196,18 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
     // Initialize editor with custom theme and modules
     $scope.editorContent = new Quill('#content', {
       modules: {
-        'toolbar': { container: '#toolbar-content' }
+        'toolbar': { container: '#toolbar-content' },
+        'link-tooltip': true,
+        'image-tooltip': true
       },
       theme: 'snow'
     });
+
     $scope.editorSignature = new Quill('#signature', {
       modules: {
-        'toolbar': { container: '#toolbar-signature' }
+        'toolbar': { container: '#toolbar-signature' },
+        'link-tooltip': true,
+        'image-tooltip': true
       },
       theme: 'snow'
     });

@@ -21,6 +21,7 @@ h1 {
 .space-right {
     margin-right: 5px;
 }
+.modal-body { word-wrap: break-word; }
 h3 {
     font-weight: normal;
 }
@@ -114,6 +115,7 @@ p {
 }
 #content, #signature {
     height: 195px;
+    transition: height 800ms ease-out;
 }
 .blur {
     filter: url(#svgBlur);
