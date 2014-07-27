@@ -10991,8 +10991,7 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
           $scope.myData = body;
           toastr.success('Received Service Requests.');
           $scope.toggleClass($scope.blurMe, 'blur'); $scope.spinner.stop();
-          
-
+          $scope.gridOptions.$gridScope.toggleSelectAll(false);
         }).error(function (data, status, headers, config) {
             toastr.error('Failed to retrieve service requests!');
             console.error(data);
