@@ -10751,7 +10751,6 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
           {
             name: 'GroupWise',
             selectMultiple: true,
-            submenu: true,
             snippet: '',
             items: [
               {
@@ -10784,21 +10783,59 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
           {
             name: 'eDirectory',
             selectMultiple: true,
-            submenu: false,
             snippet: '',
             items: []
           },
           {
             name: 'GMS',
             selectMultiple: true,
-            submenu: false,
             snippet: '',
-            items: []
+            items: [
+              {
+                name: 'ghc + upload logs',
+                selectMultiple: true,
+                snippet: 'Please run the dsapp General Health Check and upload Mobility logs:\nhttps://www.novell.com/support/kb/doc.php?id=7014307\n'
+              },
+              {
+                name: 'Update Mobility',
+                selectMultiple: true,
+                snippet: 'Please see the following to update Mobility:\nhttps://www.novell.com/support/kb/doc.php?id=7007012\n'
+              },
+              {
+                name: 'OS Upgrade Mobility',
+                selectMultiple: true,
+                snippet: 'Please see the following to upgrade the OS on a Mobility server:\nhttps://www.novell.com/support/kb/doc.php?id=7010339\n\nIt is important that Mobility is selected as an Add-On product during the upgrade or the following issue will happen:\nhttps://www.novell.com/support/kb/doc.php?id=7012365\n'
+              },
+              {
+                name: 'Self-signed certificate',
+                selectMultiple: true,
+                snippet: 'Please see the following to create a self-signed certificate:\nhttps://www.novell.com/support/kb/doc.php?id=7007674\n'
+              },
+              {
+                name: '3rd-party certificate',
+                selectMultiple: true,
+                snippet: 'Please see the following to implement a 3rd-party Trusted CA certificate:\nhttps://www.novell.com/support/kb/doc.php?id=7006904\n'
+              },
+              {
+                name: 'Device Connectivity Issues',
+                selectMultiple: true,
+                snippet: 'There can be many causes of device connectivity issues. Please refer to the following Master TID to rule out common scenarios:\nhttps://www.novell.com/support/kb/doc.php?id=7013053\n'
+              },
+              {
+                name: 'How to remove db references',
+                selectMultiple: true,
+                snippet: 'Please attempt to remove the user with WebAdmin first. Use the following TID as a last resort to clear potential database corruption:\nhttps://www.novell.com/support/kb/doc.php?id=7008852\n'
+              },
+              {
+                name: 'Refresh Mobility Server',
+                selectMultiple: true,
+                snippet: 'Please see the following to refresh a Mobility server:\nhttps://www.novell.com/support/kb/doc.php?id=7014473\nNote: This is typically used when there are corrupt databases, slow performance on a large system where maintenance that has never been run and will take too long to catch up, etc. This essentially is a fresh install option, which will resync the data fresh from GroupWise.'
+              }
+            ]
           },
           {
             name: 'Filr',
             selectMultiple: true,
-            submenu: false,
             snippet: '',
             items: []
           }
@@ -10823,7 +10860,8 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
         $scope.compileSnippet(template, $scope.selectedRows[0]);
 
       // Finally, insert the snippet
-      $scope.editorContent.insertText($scope.editorContent.getLength(), template.snippet + '\n');
+      $scope.editorContent.focus();
+      $scope.editorContent.insertText($scope.editorContent.getSelection().start, template.snippet + '\n');
 
     };
 

@@ -195,7 +195,7 @@
                       <li class="dropdown-submenu">
                         <a tabindex="-1" href="#">More..</a>
                         <ul class="dropdown-menu">
-                          <li ng-repeat="template in templates.special" ng-class="{'dropdown-submenu': template.submenu}"><a ng-click="handleTemplate(template)">{{template.name}}</a>
+                          <li ng-repeat="template in templates.special" ng-class="{'dropdown-submenu': template.items.length > 0 }"><a ng-click="handleTemplate(template)">{{template.name}}</a>
                             <ul ngIf="template.submenu" class="dropdown-menu">
                               <li ng-repeat="item in template.items"><a ng-click="handleTemplate(item)">{{item.name}}</a></li>
                             </ul>
