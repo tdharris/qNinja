@@ -10905,7 +10905,7 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
                    {field: 'STATUS', displayName: 'Status', enableCellEdit: false, width:'***'},
                    {field: 'BRIEF', displayName: 'Brief Description', enableCellEdit: true, width:'********'},
                    {field: 'LASTACTIVITYDATE', displayName: 'Date', enableCellEdit: false, cellFilter: 'date:\'mediumDate\'', width:'**', cellClass: 'grid-align-center'},
-                   {field: 'LASTACTIVITY', displayName: 'Last Activity', enableCellEdit: true, width:'**********'}],
+                   {field: 'LASTACTIVITY', displayName: 'Last Activity', enableCellEdit: true, width:'**********', cellTemplate:'<div><div class="ngCellText" tooltip="{{row.getProperty(col.field)}}" tooltip-append-to-body="true">{{row.getProperty(col.field)}}</div></div>'}],
       sortInfo: { fields: ['LASTACTIVITYDATE'], directions: ['asc'] }
     };
 
