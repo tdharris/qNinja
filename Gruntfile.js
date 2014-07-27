@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         dest: 'public/dist/<%= pkg.name %>.css'
       },
       js : {
-        src: ['public/lib/angular.min.js', 'public/lib/ui-bootstrap-tpls-0.11.0.min.js', 'public/lib/jquery.min.js', 'public/lib/bootstrap-3.1.1/js/bootstrap.min.js', 'public/lib/quill.js', 'public/lib/ng-grid/ng-grid-2.0.11.min.js', 'public/lib/toastr.min.js', 'public/lib/angular-local-storage.js', 'public/lib/spin.min.js', 'public/lib/ng-grid-flexible-height.js', 'public/js/home.js', 'public/js/serviceRequests.js'],
+        src: ['public/lib/angular.min.js', 'public/lib/ui-bootstrap-tpls-0.11.0.min.js', 'public/lib/jquery.min.js', 'public/lib/bootstrap-3.1.1/js/bootstrap.min.js', 'public/lib/quill.min.js', 'public/lib/ng-grid/ng-grid-2.0.11.min.js', 'public/lib/toastr.min.js', 'public/lib/angular-local-storage.js', 'public/lib/spin.min.js', 'public/lib/ng-grid-flexible-height.js', 'public/js/home.js', 'public/js/serviceRequests.js'],
         dest: 'public/dist/<%= pkg.name %>.js'
       }
     },
