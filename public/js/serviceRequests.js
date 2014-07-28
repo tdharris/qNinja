@@ -200,6 +200,12 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
         'link-tooltip': true,
         'image-tooltip': true
       },
+      styles: {
+        'body': {
+          'font-family': "'Arial', san-serif",
+          'font-size': "12px"
+        }
+      },
       theme: 'snow'
     });
 
@@ -208,6 +214,12 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
         'toolbar': { container: '#toolbar-signature' },
         'link-tooltip': true,
         'image-tooltip': true
+      },
+      styles: {
+        'body': {
+          'font-family': "'Arial', san-serif",
+          'font-size': "12px"
+        }
       },
       theme: 'snow'
     });

@@ -609,7 +609,11 @@ p {
     font-size: 14px;
     /*line-height: 18px;*/
 }
-
+.btn-toggle>.btn-default {
+    background-color: #fff;
+    -webkit-box-shadow: 0 !important;
+    box-shadow: 0 !important;
+}
 .checkbox {
     margin-top: 10px !important;
 }
