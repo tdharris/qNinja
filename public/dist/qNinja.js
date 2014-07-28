@@ -1069,28 +1069,33 @@ var myApp = angular.module('myApp', ['ngGrid', 'LocalStorageModule', 'ui.bootstr
     };
 
     $scope.sendMail = function(){
-      $scope.spinIt('spinMe'); 
-      $scope.rememberMe();
-      $scope.formData.content = $scope.editorContent.getHTML();
-      $scope.formData.signature = $scope.editorSignature.getHTML();
 
-      $http({
-        url: 'sendMail',
-        method: "POST",
-        data: JSON.stringify($scope.formData),
-        headers: {'Content-Type': 'application/json'}
-      }).success(function (data, status, headers, config) {
-          var res = JSON.stringify(data);
-          toastr.success(JSON.parse(res));
-          $scope.toggleClass($scope.blurMe, 'blur'); $scope.spinner.stop();
-          $scope.editorContent.setHTML('');
-          $scope.gridOptions.$gridScope.toggleSelectAll(false);
-        }).error(function (data, status, headers, config) {
-            toastr.error(headers);
-            console.error(data); 
-            $scope.toggleClass($scope.blurMe, 'blur'); $scope.spinner.stop();  
-        });
+      if ($scope.selectedRows.length === 0) {
+        toastr.error('No Service Request selected!')
+      } else {
+        $scope.spinIt('spinMe'); 
+        $scope.rememberMe();
+        $scope.formData.content = $scope.editorContent.getHTML();
+        $scope.formData.signature = $scope.editorSignature.getHTML();
 
+        $http({
+          url: 'sendMail',
+          method: "POST",
+          data: JSON.stringify($scope.formData),
+          headers: {'Content-Type': 'application/json'}
+        }).success(function (data, status, headers, config) {
+            var res = JSON.stringify(data);
+            toastr.success(JSON.parse(res));
+            $scope.toggleClass($scope.blurMe, 'blur'); $scope.spinner.stop();
+            $scope.editorContent.setHTML('');
+            $scope.gridOptions.$gridScope.toggleSelectAll(false);
+          }).error(function (data, status, headers, config) {
+              toastr.error(headers);
+              console.error(data); 
+              $scope.toggleClass($scope.blurMe, 'blur'); $scope.spinner.stop();  
+          });
+      }
+        
     };
 
     $scope.rememberMe = function() {
